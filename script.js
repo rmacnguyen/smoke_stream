@@ -46,18 +46,18 @@ let config = {
     IDLE_SPLATS: false,
     RANDOM_AMOUNT: 10,
     RANDOM_INTERVAL: 1,
-    SPLAT_ON_CLICK: true,
+    SPLAT_ON_CLICK: false,
     SHOW_MOUSE_MOVEMENT: true,
-    NUM_STREAMS: 2,
-    STREAM_SIZE: 5,
-    STREAM_SPEED: 5,
+    NUM_STREAMS: 3,
+    STREAM_SIZE: 50,
+    STREAM_SPEED: 2,
     MAX_STREAM_SPEED: 5,
-    STREAM_GRAVITY: 5,
+    STREAM_GRAVITY: 600,
     STREAM_DIRECTION_VARIABILITY: .05,
     STREAM_BRIGHTNESS: 1,
-    BASS_BOOST: 1,
+    BASS_BOOST: 10,
     STREAM_COLORS: true,
-    STREAM_COLOR: [{ r: 0, g: 0.15, b: 0 },{ r: 1, g: 0, b: 0 },{ r: 0, g: 0, b: 1 }]
+    STREAM_COLOR: [{ r: 0, g: 1, b: 0 },{ r: 1, g: 0, b: 0 },{ r: 0, g: 0, b: 1 }]
 };
 
 document.addEventListener("DOMContentLoaded", () => {   
@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.wallpaperRegisterAudioListener((audioArray) => {
         if (!config.AUDIO_RESPONSIVE) return;
-        if (audioArray[0] > 5) return;
+        if (audioArray[0] > 5) return; // not sure what this does
 
         let bass = 0.0;
         let half = Math.floor(audioArray.length / 2);
@@ -195,11 +195,11 @@ document.addEventListener("DOMContentLoaded", () => {
             boost /= (boost_range / 2);
         }
         bass /= (config.FREQ_RANGE / 2);
-        bass += boost;
         // console.log(bass*100);
-        multipleSplats(Math.floor((bass * config.SOUND_SENSITIVITY / 2)));
+        multipleSplats(Math.floor((boost * config.SOUND_SENSITIVITY / 2)));
         if (config.NUM_STREAMS > 0) {
-            generateStreams(Math.floor((bass * config.SOUND_SENSITIVITY) * 10));
+            generateStreams(Math.floor((bass * config.SOUND_SENSITIVITY) * 10), boost);
+            density_dissipation  = config.DENSITY_DISSIPATION - .1 * Math.min(bass, boost) / bass;
         }
     });
 });
@@ -246,6 +246,8 @@ class streamPrototype {
     }
 }
 
+
+let density_dissipation = config.DENSITY_DISSIPATION;
 let pointers = [];
 let splatStack = [];
 let streams = [];
@@ -254,15 +256,11 @@ pointers.push(new pointerPrototype());
 
 const { gl, ext } = getWebGLContext(canvas);
 
-if (isMobile())
-    config.SHADING = false;
 if (!ext.supportLinearFiltering)
 {
     config.SHADING = false;
     config.BLOOM = false;
 }
-
-// startGUI();
 
 function getWebGLContext (canvas) {
     const params = { alpha: true, depth: false, stencil: false, antialias: false, preserveDrawingBuffer: false };
@@ -354,129 +352,8 @@ function supportRenderTextureFormat (gl, internalFormat, format, type) {
     return true;
 }
 
-function startGUI () {
-    var gui = new dat.GUI({ width: 300 });
-    gui.add(config, 'SIM_RESOLUTION', { '32': 32, '64': 64, '128': 128, '256': 256 }).name('sim resolution').onFinishChange(initFramebuffers);
-    gui.add(config, 'DYE_RESOLUTION', { '128': 128, '256': 256, '512': 512, '1024': 1024 }).name('dye resolution').onFinishChange(initFramebuffers);
-    gui.add(config, 'DENSITY_DISSIPATION', 0.9, 1.0).name('density diffusion');
-    gui.add(config, 'VELOCITY_DISSIPATION', 0.9, 1.0).name('velocity diffusion');
-    gui.add(config, 'PRESSURE_DISSIPATION', 0.0, 1.0).name('pressure diffusion');
-    gui.add(config, 'CURL', 0, 50).name('vorticity').step(1);
-    gui.add(config, 'SPLAT_RADIUS', 0.01, 1.0).name('splat radius');
-    gui.add(config, 'SHADING').name('shading');
-    gui.add(config, 'COLORFUL').name('colorful');
-    gui.add(config, 'PAUSED').name('paused').listen();
-
-    gui.add({ fun: () => {
-        splatStack.push(parseInt(Math.random() * 20) + 5);
-    } }, 'fun').name('Random splats');
-
-    let bloomFolder = gui.addFolder('Bloom');
-    bloomFolder.add(config, 'BLOOM').name('enabled');
-    bloomFolder.add(config, 'BLOOM_INTENSITY', 0.1, 2.0).name('intensity');
-    bloomFolder.add(config, 'BLOOM_THRESHOLD', 0.0, 1.0).name('threshold');
-
-    let captureFolder = gui.addFolder('Capture');
-    captureFolder.addColor(config, 'BACK_COLOR').name('background color');
-    captureFolder.add(config, 'TRANSPARENT').name('transparent');
-    captureFolder.add({ fun: captureScreenshot }, 'fun').name('take screenshot');
-
-    let github = gui.add({ fun : () => {
-        window.open('https://github.com/PavelDoGreat/WebGL-Fluid-Simulation');
-    } }, 'fun').name('Github');
-    github.__li.className = 'cr function bigFont';
-    github.__li.style.borderLeft = '3px solid #8C8C8C';
-    let githubIcon = document.createElement('span');
-    github.domElement.parentElement.appendChild(githubIcon);
-    githubIcon.className = 'icon github';
-
-    let twitter = gui.add({ fun : () => {
-        window.open('https://twitter.com/PavelDoGreat');
-    } }, 'fun').name('Twitter');
-    twitter.__li.className = 'cr function bigFont';
-    twitter.__li.style.borderLeft = '3px solid #8C8C8C';
-    let twitterIcon = document.createElement('span');
-    twitter.domElement.parentElement.appendChild(twitterIcon);
-    twitterIcon.className = 'icon twitter';
-
-    let discord = gui.add({ fun : () => {
-        window.open('https://discordapp.com/invite/CeqZDDE');
-    } }, 'fun').name('Discord');
-    discord.__li.className = 'cr function bigFont';
-    discord.__li.style.borderLeft = '3px solid #8C8C8C';
-    let discordIcon = document.createElement('span');
-    discord.domElement.parentElement.appendChild(discordIcon);
-    discordIcon.className = 'icon discord';
-
-    let app = gui.add({ fun : () => {
-        window.open('http://onelink.to/5b58bn');
-    } }, 'fun').name('Check out new improved version');
-    app.__li.className = 'cr function appBigFont';
-    app.__li.style.borderLeft = '3px solid #00FF7F';
-    let appIcon = document.createElement('span');
-    app.domElement.parentElement.appendChild(appIcon);
-    appIcon.className = 'icon app';
-
-    if (isMobile())
-        gui.close();
-}
-
-function captureScreenshot () {
-    colorProgram.bind();
-    gl.uniform4f(colorProgram.uniforms.color, 0, 0, 0, 1);
-    blit(density.write.fbo);
-
-    render(density.write.fbo);
-    gl.bindFramebuffer(gl.FRAMEBUFFER, density.write.fbo);
-
-    let length = dyeWidth * dyeHeight * 4;
-    let pixels = new Float32Array(length);
-    gl.readPixels(0, 0, dyeWidth, dyeHeight, gl.RGBA, gl.FLOAT, pixels);
-
-    let newPixels = new Uint8Array(length);
-
-    let id = 0;
-    for (let i = dyeHeight - 1; i >= 0; i--) {
-        for (let j = 0; j < dyeWidth; j++) {
-            let nid = i * dyeWidth * 4 + j * 4;
-            newPixels[nid + 0] = clamp01(pixels[id + 0]) * 255;
-            newPixels[nid + 1] = clamp01(pixels[id + 1]) * 255;
-            newPixels[nid + 2] = clamp01(pixels[id + 2]) * 255;
-            newPixels[nid + 3] = clamp01(pixels[id + 3]) * 255;
-            id += 4;
-        }
-    }
-
-    let captureCanvas = document.createElement('canvas');
-    let ctx = captureCanvas.getContext('2d');
-    captureCanvas.width = dyeWidth;
-    captureCanvas.height = dyeHeight;
-
-    let imageData = ctx.createImageData(dyeWidth, dyeHeight);
-    imageData.data.set(newPixels);
-    ctx.putImageData(imageData, 0, 0);
-    let datauri = captureCanvas.toDataURL();
-
-    downloadURI("fluid.png", datauri);
-
-    URL.revokeObjectURL(datauri);
-}
-
 function clamp01 (input) {
     return Math.min(Math.max(input, 0), 1);
-}
-
-function downloadURI (filename, uri) {
-    let link = document.createElement("a");
-    link.download = filename;
-    link.href = uri;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-
-function isMobile () {
-    return /Mobi|Android/i.test(navigator.userAgent);
 }
 
 class GLProgram {
@@ -1389,7 +1266,7 @@ function multipleSplats (amount) {
     }
 }
 
-function generateStreams (amount) {
+function generateStreams (amount, boost) {
     let num_streams = config.NUM_STREAMS;
     let amt = Math.min(config.MAX_STREAM_SPEED, amount);
     const magnitude = Math.sqrt(Math.pow(canvas.width,2) + Math.pow(canvas.height,2)) * .001 * config.STREAM_SPEED;

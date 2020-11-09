@@ -55,7 +55,7 @@ let config = {
     STREAM_GRAVITY: 5,
     STREAM_DIRECTION_VARIABILITY: .05,
     STREAM_BRIGHTNESS: 1,
-    BASS_BOOST: 2,
+    BASS_BOOST: 1,
     STREAM_COLORS: true,
     STREAM_COLOR: [{ r: 0, g: 0.15, b: 0 },{ r: 1, g: 0, b: 0 },{ r: 0, g: 0, b: 1 }]
 };
@@ -237,24 +237,13 @@ class pointerPrototype {
 
 class streamPrototype {
     constructor() {
-        console.log(streamPrototype.instances);
-        streamPrototype.instances++;
         this.theta = -Math.PI / 4;
         this.x = canvas.width / 2;
         this.y = canvas.height / 2;
         this.dx = 1;
         this.dy = -1;
-/*        if (config.STREAM_COLORS) {
-            this.color = config.STREAM_COLOR[streamPrototype.instances];
-        } else if (config.COLORFUL) {
-            this.color = generateColor();
-        } else {
-            this.color = config.POINTER_COLOR.getRandom();
-        }*/
         this.color = config.COLORFUL ? generateColor() : config.POINTER_COLOR.getRandom();
     }
-
-    static instances = 0;
 }
 
 let pointers = [];
@@ -1421,7 +1410,6 @@ function generateStreams (amount) {
                 for (let j = 0; j < Math.min(num_streams, streams.length); j ++) {
                     if (j === k) continue;
                     let str = streams[j];
-                    // console.log(str);
                     let a = (!str.x ? 0 : str.x) - thisSplat.x;
                     let b = (!str.y ? 0 : str.y) - thisSplat.y;
                     let d = Math.hypot(a,b);
@@ -1429,7 +1417,6 @@ function generateStreams (amount) {
                     if (Math.abs(e) === Infinity) e = 0;
                     dx_gravity += a * e;
                     dy_gravity += b * e;
-                   // console.log(k, j, i, e, dx_gravity, dy_gravity);
                 }
             }
             
@@ -1441,7 +1428,6 @@ function generateStreams (amount) {
             } else {
                 color = Object.assign({}, config.POINTER_COLOR.getRandom());
             }
-            // const color = Object.assign({}, thisSplat.color);
             color.r *= 1.0 / num_streams * config.STREAM_BRIGHTNESS;
             color.g *= 1.0 / num_streams * config.STREAM_BRIGHTNESS;
             color.b *= 1.0 / num_streams * config.STREAM_BRIGHTNESS;
@@ -1479,87 +1465,6 @@ function generateStreams (amount) {
         }
     }
 }
-
-/*
-function streams (amount, num_streams = config.NUM_STREAMS) {
-    let amt = Math.min(config.MAX_STREAM_SPEED, amount);
-    const magnitude = Math.sqrt(Math.pow(canvas.width,2) + Math.pow(canvas.height,2)) * .001 * config.STREAM_SPEED;
-    for (let k = 0; k < num_streams; k++) {
-        if (streams.length <= k) streams.push(new streamPrototype());
-        let thisSplat = streams[k];
-        console.log(k);
-        for (let i = 0; i < amt; i++) {
-            const color = config.COLORFUL ? generateColor() : Object.assign({}, config.POINTER_COLOR.getRandom());
-            color.r *= 1.0 / num_streams;
-            color.g *= 1.0 / num_streams;
-            color.b *= 1.0 / num_streams;
-            let max_theta_change = 0.05;
-            let new_theta = thisSplat.theta + (Math.PI * 2 * max_theta_change * (Math.random() - 0.5));
-            new_theta = (new_theta + Math.PI * 2) % (2 * Math.PI);
-            thisSplat.dx = Math.sin(new_theta) * magnitude;
-            thisSplat.dy = Math.cos(new_theta) * magnitude;
-            const x = thisSplat.x + thisSplat.dx;
-            const y = thisSplat.y + thisSplat.dy;
-            splat(x, y, thisSplat.dx, thisSplat.dy, color, Math.pow(amt, .33) * config.STREAM_SIZE / 25);
-            thisSplat.x =  thisSplat.x + thisSplat.dx;
-            thisSplat.y =  thisSplat.y + thisSplat.dy;
-            if (thisSplat.x > canvas.width) {
-                thisSplat.x = canvas.width;
-                new_theta -= Math.PI * 2;
-                new_theta = -new_theta;
-            }
-            if (thisSplat.x < 0) {
-                thisSplat.x = 0;
-                new_theta -= Math.PI * 2;
-                new_theta = -new_theta;
-            }
-            if (thisSplat.y > canvas.height) {
-                thisSplat.y = canvas.height;
-                new_theta -= Math.PI;
-                new_theta = -new_theta;
-            }
-            if (thisSplat.y < 0) {
-                thisSplat.y = 0;
-                new_theta -= Math.PI;
-                new_theta = -new_theta;
-            }
-            thisSplat.theta = new_theta;
-        }
-    }
-}
-
-function continuousSplats (amount) {
-    const magnitude = Math.sqrt(Math.pow(canvas.width,2) + Math.pow(canvas.height,2)) * .01;
-
-    let base_dx = 50 * (Math.random() - 0.5);
-    let base_dy = 50 * (Math.random() - 0.5);
-    for (let i = 0; i < amount; i++) {
-        const color = config.COLORFUL ? generateColor() : Object.assign({}, config.POINTER_COLOR.getRandom());
-        color.r *= 10.0;
-        color.g *= 10.0;
-        color.b *= 10.0;
-        streams[0].dx = base_dx + 5 * (Math.random() - 0.5);
-        streams[0].dy = base_dy + 5 * (Math.random() - 0.5);
-        const x = streams[0].x + streams[0].dx;
-        const y = streams[0].y + streams[0].dy;
-        splat(x, y, streams[0].dx, streams[0].dy, color);
-        streams[0].x =  streams[0].x + streams[0].dx;
-        streams[0].y =  streams[0].y + streams[0].dy;
-        if (streams[0].x > canvas.width) {
-            streams[0].x = canvas.width;
-        }
-        if (streams[0].x < 0) {
-            streams[0].x = 0;
-        }
-        if (streams[0].y > canvas.height) {
-            streams[0].y = canvas.height;
-        }
-        if (streams[0].y < 0) {
-            streams[0].y = 0;
-        }
-    }
-}
-*/
 
 function resizeCanvas () {
     if (canvas.width != canvas.clientWidth || canvas.height != canvas.clientHeight) {

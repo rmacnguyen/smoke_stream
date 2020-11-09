@@ -9,6 +9,7 @@ Array.prototype.getRandom = function() {
 };
 
 let splatColors = [{ r: 0, g: 0.15, b: 0 }];
+let streamColors = [{ r: 0, g: 0.15, b: 0 }];
 
 let idleSplats;
 
@@ -27,7 +28,7 @@ let config = {
     CURL: 30,
     SPLAT_RADIUS: 0.3,
     SHADING: true,
-    COLORFUL: true,
+    COLORFUL: false,
     PAUSED: false,
     BACK_COLOR: { r: 0, g: 0, b: 0 },
     TRANSPARENT: false,
@@ -54,7 +55,9 @@ let config = {
     STREAM_GRAVITY: 5,
     STREAM_DIRECTION_VARIABILITY: .05,
     STREAM_BRIGHTNESS: 1,
-    BASS_BOOST: 2
+    BASS_BOOST: 2,
+    STREAM_COLORS: true,
+    STREAM_COLOR: [{ r: 0, g: 0.15, b: 0 },{ r: 1, g: 0, b: 0 },{ r: 0, g: 0, b: 1 }]
 };
 
 document.addEventListener("DOMContentLoaded", () => {   
@@ -104,6 +107,19 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (properties.more_colors && properties.more_colors.value) {
                 config.POINTER_COLOR = splatColors;
             }
+            
+            if (properties.stream_colors) config.STREAM_COLORS = properties.stream_colors.value;
+
+            if (properties.stream_color_1) streamColors[0] = rgbToPointerColor(properties.stream_color_1.value);
+            if (properties.stream_color_2) streamColors[1] = rgbToPointerColor(properties.stream_color_2.value);
+            if (properties.stream_color_3) streamColors[2] = rgbToPointerColor(properties.stream_color_3.value);
+            if (properties.stream_color_4) streamColors[3] = rgbToPointerColor(properties.stream_color_4.value);
+            if (properties.stream_color_5) streamColors[4] = rgbToPointerColor(properties.stream_color_5.value);
+             
+            if (properties.stream_colors && properties.stream_colors.value) {
+                config.STREAM_COLOR = streamColors;
+            }
+
             if (properties.use_background_image) config.TRANSPARENT = properties.use_background_image.value;
             if (properties.background_image) canvas.style.backgroundImage = `url("file:///${properties.background_image.value}")`;
             if (properties.repeat_background) canvas.style.backgroundRepeat = properties.repeat_background.value ? "repeat" : "no-repeat";
@@ -221,13 +237,24 @@ class pointerPrototype {
 
 class streamPrototype {
     constructor() {
+        console.log(streamPrototype.instances);
+        streamPrototype.instances++;
         this.theta = -Math.PI / 4;
         this.x = canvas.width / 2;
         this.y = canvas.height / 2;
         this.dx = 1;
         this.dy = -1;
+/*        if (config.STREAM_COLORS) {
+            this.color = config.STREAM_COLOR[streamPrototype.instances];
+        } else if (config.COLORFUL) {
+            this.color = generateColor();
+        } else {
+            this.color = config.POINTER_COLOR.getRandom();
+        }*/
         this.color = config.COLORFUL ? generateColor() : config.POINTER_COLOR.getRandom();
     }
+
+    static instances = 0;
 }
 
 let pointers = [];
@@ -1380,16 +1407,18 @@ function generateStreams (amount) {
     if (streams.length < num_streams) {
         for (let i = 0; i < num_streams; i++) {
             if (streams.length <= i) streams.push(new streamPrototype());
+            if (config.STREAM_COLORS) {
+                streams[i].color = config.STREAM_COLOR[i];
+            }
         }
     }
     for (let i = 0; i < amt; i++) {
-         for (let k = 0; k < streams.length; k++) {
+         for (let k = 0; k < Math.min(num_streams, streams.length); k++) {
             let thisSplat = streams[k];
-            // console.log(thisSplat);
             let dx_gravity = 0;
             let dy_gravity = 0;
             if (config.STREAM_GRAVITY > 0) {
-                for (let j = 0; j < streams.length; j ++) {
+                for (let j = 0; j < Math.min(num_streams, streams.length); j ++) {
                     if (j === k) continue;
                     let str = streams[j];
                     // console.log(str);
@@ -1404,7 +1433,15 @@ function generateStreams (amount) {
                 }
             }
             
-            const color = config.COLORFUL ? generateColor() : Object.assign({}, config.POINTER_COLOR.getRandom());
+            let color = Object.assign({}, thisSplat.color);
+            if (config.STREAM_COLORS) {
+                color = Object.assign({}, config.STREAM_COLOR[k]);
+            } else if (config.COLORFUL) {
+                color = generateColor(); 
+            } else {
+                color = Object.assign({}, config.POINTER_COLOR.getRandom());
+            }
+            // const color = Object.assign({}, thisSplat.color);
             color.r *= 1.0 / num_streams * config.STREAM_BRIGHTNESS;
             color.g *= 1.0 / num_streams * config.STREAM_BRIGHTNESS;
             color.b *= 1.0 / num_streams * config.STREAM_BRIGHTNESS;

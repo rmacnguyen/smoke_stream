@@ -389,78 +389,133 @@
 				"type" : "slider",
 				"value" : 2
 			},
+			"stream_colors" :
+			{
+				"condition" : "num_streams.value > 0",
+				"order" : 141,
+				"text" : "Stream Colors",
+				"type" : "bool",
+				"value" : false
+			},
+			"stream_color_1" : 
+			{
+				"condition" : "stream_colors.value && num_streams.value > 0",
+				"order" : 142,
+				"text" : "Stream Color 1",
+				"type" : "color",
+				"value" : "0 1 0"
+			},
+			"stream_color_2" : 
+			{
+				"condition" : "stream_colors.value && num_streams.value > 1",
+				"order" : 143,
+				"text" : "Stream Color 2",
+				"type" : "color",
+				"value" : "0 1 1"
+			},
+			"stream_color_3" : 
+			{
+				"condition" : "stream_colors.value && num_streams.value > 2",
+				"order" : 144,
+				"text" : "Stream Color 3",
+				"type" : "color",
+				"value" : "0 0 1"
+			},
+			"stream_color_4" : 
+			{
+				"condition" : "stream_colors.value && num_streams.value > 3",
+				"order" : 145,
+				"text" : "Stream Color 4",
+				"type" : "color",
+				"value" : "1 0 0"
+			},
+			"stream_color_5" : 
+			{
+				"condition" : "stream_colors.value && num_streams.value > 4",
+				"order" : 146,
+				"text" : "Stream Color 5",
+				"type" : "color",
+				"value" : "0.9411764705882353 1 0"
+			},
 			"stream_size" : 
 			{
+				"condition" : "num_streams.value > 0",
 				"fraction" : false,
 				"max" : 50,
 				"min" : 0.01,
 				"step" : 0.01,
 				"precision" : 2,
-				"order" : 141,
+				"order" : 150,
 				"text" : "Stream Size",
 				"type" : "slider",
 				"value" : 5
 			},
 			"stream_speed" : 
 			{
+				"condition" : "num_streams.value > 0",
 				"fraction" : false,
 				"max" : 10,
 				"min" : 0,
-				"order" : 142,
+				"order" : 151,
 				"text" : "Stream Velocity",
 				"type" : "slider",
 				"value" : 5
 			},
 			"max_stream_speed" : 
 			{
+				"condition" : "num_streams.value > 0",
 				"fraction" : false,
 				"max" : 10,
 				"min" : 0,
-				"order" : 143,
+				"order" : 152,
 				"text" : "Max Stream Velocity",
 				"type" : "slider",
 				"value" : 5
 			},
 			"stream_gravity" : 
 			{
+				"condition" : "num_streams.value > 0",
 				"fraction" : false,
 				"max" : 1000,
 				"min" : 0,
-				"order" : 144,
+				"order" : 153,
 				"text" : "Stream Gravity",
 				"type" : "slider",
 				"value" : 5
 			},
 			"stream_direction_variability" : 
 			{
+				"condition" : "num_streams.value > 0",
 				"fraction" : false,
 				"max" : 1,
 				"min" : 0,
 				"precision" : 2,
 				"step" : 0.01,
-				"order" : 145,
+				"order" : 154,
 				"text" : "Stream Variability",
 				"type" : "slider",
 				"value" : 0.05
 			},
 			"stream_brightness" : 
 			{
+				"condition" : "num_streams.value > 0",
 				"fraction" : false,
 				"max" : 1,
 				"min" : 0,
 				"precision" : 2,
 				"step" : 0.01,
-				"order" : 146,
+				"order" : 155,
 				"text" : "Stream Brightness",
 				"type" : "slider",
 				"value" : 1
 			},
 			"bass_boost" :
 			{
+				"condition" : "num_streams.value > 0",
 				"fraction" : false,
 				"max" : 10,
 				"min" : 0,
-				"order" : 147,
+				"order" : 156,
 				"text" : "Bass boost",
 				"type" : "slider",
 				"value" : 2

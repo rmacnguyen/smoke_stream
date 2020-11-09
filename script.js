@@ -182,7 +182,9 @@ document.addEventListener("DOMContentLoaded", () => {
         bass += boost;
         // console.log(bass*100);
         multipleSplats(Math.floor((bass * config.SOUND_SENSITIVITY / 2)));
-        streams(Math.floor((bass * config.SOUND_SENSITIVITY) * 10));
+        if (config.NUM_STREAMS > 0) {
+            generateStreams(Math.floor((bass * config.SOUND_SENSITIVITY) * 10));
+        }
     });
 });
 
@@ -217,7 +219,7 @@ class pointerPrototype {
     }
 }
 
-class mainSplatPrototype {
+class streamPrototype {
     constructor() {
         this.theta = -Math.PI / 4;
         this.x = canvas.width / 2;
@@ -230,10 +232,9 @@ class mainSplatPrototype {
 
 let pointers = [];
 let splatStack = [];
-let mainSplat = [];
+let streams = [];
 let bloomFramebuffers = [];
 pointers.push(new pointerPrototype());
-// mainSplat.push(new mainSplatPrototype());
 
 const { gl, ext } = getWebGLContext(canvas);
 
@@ -1372,24 +1373,25 @@ function multipleSplats (amount) {
     }
 }
 
-function streams (amount, num_streams = config.NUM_STREAMS) {
+function generateStreams (amount) {
+    let num_streams = config.NUM_STREAMS;
     let amt = Math.min(config.MAX_STREAM_SPEED, amount);
     const magnitude = Math.sqrt(Math.pow(canvas.width,2) + Math.pow(canvas.height,2)) * .001 * config.STREAM_SPEED;
-    if (mainSplat.length < num_streams) {
+    if (streams.length < num_streams) {
         for (let i = 0; i < num_streams; i++) {
-            if (mainSplat.length <= i) mainSplat.push(new mainSplatPrototype());
+            if (streams.length <= i) streams.push(new streamPrototype());
         }
     }
     for (let i = 0; i < amt; i++) {
-         for (let k = 0; k < mainSplat.length; k++) {
-            let thisSplat = mainSplat[k];
+         for (let k = 0; k < streams.length; k++) {
+            let thisSplat = streams[k];
             // console.log(thisSplat);
             let dx_gravity = 0;
             let dy_gravity = 0;
             if (config.STREAM_GRAVITY > 0) {
-                for (let j = 0; j < mainSplat.length; j ++) {
+                for (let j = 0; j < streams.length; j ++) {
                     if (j === k) continue;
-                    let str = mainSplat[j];
+                    let str = streams[j];
                     // console.log(str);
                     let a = (!str.x ? 0 : str.x) - thisSplat.x;
                     let b = (!str.y ? 0 : str.y) - thisSplat.y;
@@ -1446,8 +1448,8 @@ function streams (amount, num_streams = config.NUM_STREAMS) {
     let amt = Math.min(config.MAX_STREAM_SPEED, amount);
     const magnitude = Math.sqrt(Math.pow(canvas.width,2) + Math.pow(canvas.height,2)) * .001 * config.STREAM_SPEED;
     for (let k = 0; k < num_streams; k++) {
-        if (mainSplat.length <= k) mainSplat.push(new mainSplatPrototype());
-        let thisSplat = mainSplat[k];
+        if (streams.length <= k) streams.push(new streamPrototype());
+        let thisSplat = streams[k];
         console.log(k);
         for (let i = 0; i < amt; i++) {
             const color = config.COLORFUL ? generateColor() : Object.assign({}, config.POINTER_COLOR.getRandom());
@@ -1499,24 +1501,24 @@ function continuousSplats (amount) {
         color.r *= 10.0;
         color.g *= 10.0;
         color.b *= 10.0;
-        mainSplat[0].dx = base_dx + 5 * (Math.random() - 0.5);
-        mainSplat[0].dy = base_dy + 5 * (Math.random() - 0.5);
-        const x = mainSplat[0].x + mainSplat[0].dx;
-        const y = mainSplat[0].y + mainSplat[0].dy;
-        splat(x, y, mainSplat[0].dx, mainSplat[0].dy, color);
-        mainSplat[0].x =  mainSplat[0].x + mainSplat[0].dx;
-        mainSplat[0].y =  mainSplat[0].y + mainSplat[0].dy;
-        if (mainSplat[0].x > canvas.width) {
-            mainSplat[0].x = canvas.width;
+        streams[0].dx = base_dx + 5 * (Math.random() - 0.5);
+        streams[0].dy = base_dy + 5 * (Math.random() - 0.5);
+        const x = streams[0].x + streams[0].dx;
+        const y = streams[0].y + streams[0].dy;
+        splat(x, y, streams[0].dx, streams[0].dy, color);
+        streams[0].x =  streams[0].x + streams[0].dx;
+        streams[0].y =  streams[0].y + streams[0].dy;
+        if (streams[0].x > canvas.width) {
+            streams[0].x = canvas.width;
         }
-        if (mainSplat[0].x < 0) {
-            mainSplat[0].x = 0;
+        if (streams[0].x < 0) {
+            streams[0].x = 0;
         }
-        if (mainSplat[0].y > canvas.height) {
-            mainSplat[0].y = canvas.height;
+        if (streams[0].y > canvas.height) {
+            streams[0].y = canvas.height;
         }
-        if (mainSplat[0].y < 0) {
-            mainSplat[0].y = 0;
+        if (streams[0].y < 0) {
+            streams[0].y = 0;
         }
     }
 }

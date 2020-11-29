@@ -7,519 +7,812 @@
 	{
 		"properties" : 
 		{
-			"audio_responsive" : 
-			{
-				"order" : 117,
-				"text" : "Audio Responsive",
-				"type" : "bool",
-				"value" : true
-			},
-			"background_color" : 
-			{
-				"order" : 106,
-				"text" : "Background Color",
-				"type" : "color",
-				"value" : "0 0 0"
-			},
-			"background_image" : 
-			{
-				"condition" : "use_background_image.value",
-				"fileType" : "image",
-				"order" : 103,
-				"text" : "Background Image",
-				"type" : "file",
-				"value" : ""
-			},
-			"background_image_size" : 
-			{
-				"condition" : "use_background_image.value",
-				"options" : 
-				[
-					{
-						"label" : "Contain",
-						"value" : "contain"
-					},
-					{
-						"label" : "Cover",
-						"value" : "Cover"
-					}
-				],
-				"order" : 105,
-				"text" : "Background Image Size",
-				"type" : "combo",
-				"value" : "contain"
-			},
-			"bloom_intensity" : 
-			{
-				"fraction" : true,
-				"max" : 2,
-				"min" : 0.010000000000000001,
-				"order" : 131,
-				"precision" : 2,
-				"step" : 0.01,
-				"text" : "Bloom Intensity",
-				"type" : "slider",
-				"value" : 0.80000000000000004
-			},
-			"bloom_threshold" : 
-			{
-				"fraction" : true,
-				"max" : 1,
-				"min" : 0,
-				"order" : 132,
-				"precision" : 2,
-				"step" : 0.01,
-				"text" : "Bloom Threshold",
-				"type" : "slider",
-				"value" : 0.59999999999999998
-			},
-			"colorful" : 
-			{
-				"order" : 110,
-				"text" : "Random Color",
-				"type" : "bool",
-				"value" : true
-			},
-			"density_diffusion" : 
-			{
-				"fraction" : true,
-				"max" : 1,
-				"min" : 0.90000000000000002,
-				"order" : 123,
-				"precision" : 3,
-				"step" : 0.001,
-				"text" : "Density Diffusion",
-				"type" : "slider",
-				"value" : 0.96999999999999997
-			},
-			"dye_resolution" : 
-			{
-				"options" : 
-				[
-					{
-						"label" : "32",
-						"value" : "32"
-					},
-					{
-						"label" : "64",
-						"value" : "64"
-					},
-					{
-						"label" : "128",
-						"value" : "128"
-					},
-					{
-						"label" : "256",
-						"value" : "256"
-					},
-					{
-						"label" : "512",
-						"value" : "512"
-					},
-					{
-						"label" : "1024",
-						"value" : "1024"
-					},
-					{
-						"label" : "2048",
-						"value" : "2048"
-					},
-					{
-						"label" : "4096",
-						"value" : "4096"
-					}
-				],
-				"order" : 122,
-				"text" : "Dye Resolution",
-				"type" : "combo",
-				"value" : "512"
-			},
-			"enable_bloom" : 
-			{
-				"order" : 130,
-				"text" : "Enable Bloom",
-				"type" : "bool",
-				"value" : true
-			},
-			"frequency_range" : 
-			{
-				"condition" : "audio_responsive.value",
-				"fraction" : false,
-				"max" : 62,
-				"min" : 1,
-				"order" : 119,
-				"text" : "Frequency Range",
-				"type" : "slider",
-				"value" : 8
-			},
-			"frequency_range_start" : 
-			{
-				"condition" : "audio_responsive.value",
-				"fraction" : false,
-				"max" : 62,
-				"min" : 0,
-				"order" : 120,
-				"text" : "Frequency Range Start",
-				"type" : "slider",
-				"value" : 0
-			},
-			"idle_random_splats" : 
-			{
-				"order" : 107,
-				"text" : "Idle Random Splats",
-				"type" : "bool",
-				"value" : false
-			},
-			"more_colors" : 
-			{
-				"condition" : "!colorful.value",
-				"order" : 112,
-				"text" : "More Colors",
-				"type" : "bool",
-				"value" : false
-			},
-			"paused" : 
-			{
-				"order" : 129,
-				"text" : "Paused",
-				"type" : "bool",
-				"value" : false
-			},
-			"pressure_diffusion" : 
-			{
-				"fraction" : true,
-				"max" : 1,
-				"min" : 0,
-				"order" : 125,
-				"precision" : 2,
-				"step" : 0.01,
-				"text" : "Pressure Diffusion",
-				"type" : "slider",
-				"value" : 0.80000000000000004
-			},
-			"random_splat_amount" : 
-			{
-				"condition" : "idle_random_splats.value",
-				"fraction" : true,
-				"max" : 100,
-				"min" : 1,
-				"order" : 109,
-				"precision" : 2,
-				"step" : 1,
-				"text" : "Random Splat Amount",
-				"type" : "slider",
-				"value" : 10
-			},
-			"random_splat_interval" : 
-			{
-				"condition" : "idle_random_splats.value",
-				"fraction" : true,
-				"max" : 5,
-				"min" : 0,
-				"order" : 108,
-				"precision" : 2,
-				"step" : 0.01,
-				"text" : "Random Splat Interval",
-				"type" : "slider",
-				"value" : 1
-			},
-			"repeat_background" : 
-			{
-				"condition" : "use_background_image.value",
-				"order" : 104,
-				"text" : "Repeat Background",
-				"type" : "bool",
-				"value" : false
-			},
 			"schemecolor" : 
 			{
-				"order" : 0,
+				"order" : 1,
 				"text" : "ui_browse_properties_scheme_color",
 				"type" : "color",
 				"value" : "0 0 0"
 			},
-			"shading" : 
+
+
+			"general_settings" :
 			{
-				"order" : 128,
-				"text" : "Shading",
-				"type" : "bool",
-				"value" : true
-			},
-			"show_mouse_movement" : 
-			{
-				"order" : 100,
-				"text" : "Show Mouse Movement",
-				"type" : "bool",
-				"value" : true
-			},
-			"simulation_resolution" : 
-			{
-				"options" : 
-				[
-					{
-						"label" : "32",
-						"value" : "32"
-					},
-					{
-						"label" : "64",
-						"value" : "64"
-					},
-					{
-						"label" : "128",
-						"value" : "128"
-					},
-					{
-						"label" : "256",
-						"value" : "256"
-					}
-				],
-				"order" : 121,
-				"text" : "Simulation Resolution",
-				"type" : "combo",
-				"value" : "256"
-			},
-			"sound_sensitivity" : 
-			{
-				"condition" : "audio_responsive.value",
-				"fraction" : true,
-				"max" : 10,
-				"min" : 0,
-				"order" : 118,
-				"precision" : 3,
-				"step" : 0.01,
-				"text" : "Sound Sensitivity",
-				"type" : "slider",
-				"value" : 5
-			},
-			"splat_color" : 
-			{
-				"condition" : "!colorful.value",
-				"order" : 111,
-				"text" : "Splat Color",
-				"type" : "color",
-				"value" : "0 1 0"
-			},
-			"splat_color_2" : 
-			{
-				"condition" : "more_colors.value && !colorful.value",
-				"order" : 113,
-				"text" : "Splat Color 2",
-				"type" : "color",
-				"value" : "0 1 1"
-			},
-			"splat_color_3" : 
-			{
-				"condition" : "more_colors.value && !colorful.value",
-				"order" : 114,
-				"text" : "Splat Color 3",
-				"type" : "color",
-				"value" : "0 0 1"
-			},
-			"splat_color_4" : 
-			{
-				"condition" : "more_colors.value && !colorful.value",
-				"order" : 115,
-				"text" : "Splat Color 4",
-				"type" : "color",
-				"value" : "1 0 0"
-			},
-			"splat_color_5" : 
-			{
-				"condition" : "more_colors.value && !colorful.value",
-				"order" : 116,
-				"text" : "Splat Color 5",
-				"type" : "color",
-				"value" : "0.9411764705882353 1 0"
-			},
-			"splat_on_click" : 
-			{
-				"order" : 101,
-				"text" : "Splat on click",
-				"type" : "bool",
-				"value" : true
-			},
-			"splat_radius" : 
-			{
-				"fraction" : true,
-				"max" : 1,
-				"min" : 0.01,
-				"order" : 127,
-				"precision" : 2,
-				"step" : 0.01,
-				"text" : "Splat Radius",
-				"type" : "slider",
-				"value" : 0.3
-			},
-			"use_background_image" : 
-			{
-				"order" : 102,
-				"text" : "Use Background Image",
+				"order" : 90,
+				"text" : "===== General Settings ========",
 				"type" : "bool",
 				"value" : false
 			},
-			"velocity_diffusion" : 
+				"show_mouse_movement" : 
+				{
+					"condition" : "general_settings.value",
+					"order" : 91,
+					"text" : "... Show Mouse Movement",
+					"type" : "bool",
+					"value" : false
+				},
+				"pointer_size" : 
+				{
+					"condition" : "general_settings.value && show_mouse_movement.value",
+					"fraction" : true,
+					"max" : 1,
+					"min" : 0.01,
+					"order" : 92,
+					"precision" : 2,
+					"step" : 0.01,
+					"text" : "... Mouse Size",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 0.5
+				},
+				"mouse_gravity" : 
+				{
+					"condition" : "general_settings.value && show_mouse_movement.value",
+					"order" : 93,
+					"text" : "... Mouse Affects Streams",
+					"type" : "bool",
+					"value" : false
+				},
+				"splat_on_click" : 
+				{
+					"condition" : "general_settings.value",
+					"order" : 103,
+					"text" : "... Splat on click",
+					"type" : "bool",
+					"value" : false
+				},
+				"paused" : 
+				{
+					"condition" : "general_settings.value",
+					"order" : 104,
+					"text" : "... Paused",
+					"type" : "bool",
+					"value" : false
+				},
+				"background_color" : 
+				{
+					"condition" : "general_settings.value",
+					"order" : 105,
+					"text" : "... Background Color",
+					"type" : "color",
+					"value" : "0 0 0"
+				},
+				"use_background_image" : 
+				{
+					"condition" : "general_settings.value",
+					"order" : 106,
+					"text" : "... Use Background Image",
+					"type" : "bool",
+					"value" : false
+				},
+				"background_image" : 
+				{
+					"condition" : "general_settings.value && use_background_image.value",
+					"fileType" : "image",
+					"order" : 107,
+					"text" : "... Background Image",
+					"type" : "file",
+					"value" : ""
+				},
+				"repeat_background" : 
+				{
+					"condition" : "general_settings.value && use_background_image.value",
+					"order" : 108,
+					"text" : "... Repeat Background",
+					"type" : "bool",
+					"value" : false
+				},
+				"background_image_size" : 
+				{
+					"condition" : "general_settings.value && use_background_image.value",
+					"options" : 
+					[
+						{
+							"label" : "Contain",
+							"value" : "contain"
+						},
+						{
+							"label" : "Cover",
+							"value" : "Cover"
+						}
+					],
+					"order" : 109,
+					"text" : "... Background Image Size",
+					"type" : "combo",
+					"value" : "contain"
+				},
+				"zoom_percent" : 
+				{
+					"condition" : "general_settings.value",
+					"max" : 500,
+					"min" : 100,
+					"precision" : 3,
+					"step" : 1,
+					"order" : 110,
+					"text" : "... Zoom",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 100
+				},
+				
+				"audio_responsive" : 
+				{
+					"condition" : "general_settings.value",
+					"order" : 120,
+					"text" : "... Audio Responsive",
+					"type" : "bool",
+					"value" : true
+				},
+				"sound_sensitivity" : 
+				{
+					"condition" : "general_settings.value && audio_responsive.value",
+					"fraction" : true,
+					"max" : 10,
+					"min" : 0,
+					"order" : 121,
+					"precision" : 3,
+					"step" : 0.01,
+					"text" : "... Sound Sensitivity",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 3.75
+				},
+				"frequency_range" : 
+				{
+					"condition" : "general_settings.value && audio_responsive.value",
+					"fraction" : false,
+					"max" : 62,
+					"min" : 1,
+					"order" : 122,
+					"text" : "... Freq Range",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 12
+				},
+				"frequency_range_start" : 
+				{
+					"condition" : "general_settings.value && audio_responsive.value",
+					"fraction" : false,
+					"max" : 62,
+					"min" : 0,
+					"order" : 123,
+					"text" : "... Freq Range Start",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 0
+				},
+
+
+			"fluid_settings" :
 			{
-				"fraction" : true,
-				"max" : 1,
-				"min" : 0.90000000000000002,
-				"order" : 124,
-				"precision" : 3,
-				"step" : 0.001,
-				"text" : "Velocity Diffusion",
-				"type" : "slider",
-				"value" : 0.97999999999999998
-			},
-			"vorticity" : 
-			{
-				"fraction" : false,
-				"max" : 50,
-				"min" : 0,
-				"order" : 126,
-				"text" : "Vorticity",
-				"type" : "slider",
-				"value" : 30
-			},
-			"num_streams" : 
-			{
-				"fraction" : false,
-				"max" : 5,
-				"min" : 0,
-				"order" : 140,
-				"text" : "Number of Streams",
-				"type" : "slider",
-				"value" : 2
-			},
-			"stream_colors" :
-			{
-				"condition" : "num_streams.value > 0",
-				"order" : 141,
-				"text" : "Stream Colors",
+				"order" : 200,
+				"text" : "===== Fluid Settings ==========",
 				"type" : "bool",
 				"value" : false
 			},
-			"stream_color_1" : 
+				"simulation_resolution" : 
+				{
+					"condition" : "fluid_settings.value",
+					"options" : 
+					[
+						{
+							"label" : "32",
+							"value" : "32"
+						},
+						{
+							"label" : "64",
+							"value" : "64"
+						},
+						{
+							"label" : "128",
+							"value" : "128"
+						},
+						{
+							"label" : "256",
+							"value" : "256"
+						},
+						{
+							"label" : "512",
+							"value" : "512"
+						},
+						{
+							"label" : "1024",
+							"value" : "1024"
+						}
+					],
+					"order" : 204,
+					"text" : "... Simulation Resolution",
+					"type" : "combo",
+					"value" : "1024"
+				},
+				"dye_resolution" : 
+				{
+					"condition" : "fluid_settings.value",
+					"options" : 
+					[
+						{
+							"label" : "32",
+							"value" : "32"
+						},
+						{
+							"label" : "64",
+							"value" : "64"
+						},
+						{
+							"label" : "128",
+							"value" : "128"
+						},
+						{
+							"label" : "256",
+							"value" : "256"
+						},
+						{
+							"label" : "512",
+							"value" : "512"
+						},
+						{
+							"label" : "1024",
+							"value" : "1024"
+						},
+						{
+							"label" : "2048",
+							"value" : "2048"
+						},
+						{
+							"label" : "4096",
+							"value" : "4096"
+						},
+						{
+							"label" : "8192",
+							"value" : "8192"
+						}
+					],
+					"order" : 205,
+					"text" : "... Dye Resolution",
+					"type" : "combo",
+					"value" : "8192"
+				},
+				"density_diffusion" : 
+				{
+					"condition" : "fluid_settings.value",
+					"fraction" : true,
+					"max" : 1,
+					"min" : 0,
+					"order" : 208,
+					"precision" : 3,
+					"step" : 0.001,
+					"text" : "... Density Diffusion",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 1
+				},
+				"density_diffusion_multiplier" : 
+				{
+					"condition" : "fluid_settings.value",
+					"fraction" : true,
+					"max" : 5,
+					"min" : 1,
+					"order" : 209,
+					"precision" : 2,
+					"step" : 0.01,
+					"text" : "... Density Multiplier",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 3.3
+				},
+				"velocity_diffusion" : 
+				{
+					"condition" : "fluid_settings.value",
+					"fraction" : true,
+					"max" : 1,
+					"min" : 0,
+					"order" : 210,
+					"precision" : 3,
+					"step" : 0.001,
+					"text" : "... Velocity Diffusion",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 0.91
+				},
+				"velocity_diffusion_multiplier" : 
+				{
+					"condition" : "fluid_settings.value",
+					"fraction" : true,
+					"max" : 5,
+					"min" : 1,
+					"order" : 211,
+					"precision" : 3,
+					"step" : 0.01,
+					"text" : "... Velocity Multiplier",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 1
+				},
+				"pressure_diffusion" : 
+				{
+					"condition" : "fluid_settings.value",
+					"fraction" : true,
+					"max" : 1,
+					"min" : 0,
+					"order" : 212,
+					"precision" : 2,
+					"step" : 0.01,
+					"text" : "... Pressure Diffusion",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 0.80000000000000004
+				},
+				"curl" : 
+				{
+					"condition" : "fluid_settings.value",
+					"fraction" : true,
+					"max" : 100,
+					"min" : 0,
+					"order" : 213,
+					"text" : "... Curl",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 50
+				},
+				"shading" : 
+				{
+					"condition" : "fluid_settings.value",
+					"order" : 215,
+					"text" : "... Shading",
+					"type" : "bool",
+					"value" : true
+				},
+				"enable_bloom" : 
+				{
+					"condition" : "fluid_settings.value",
+					"order" : 219,
+					"text" : "... Enable Bloom",
+					"type" : "bool",
+					"value" : false
+				},
+					"bloom_intensity" : 
+					{
+						"condition" : "enable_bloom.value && fluid_settings.value",
+						"fraction" : true,
+						"max" : 2,
+						"min" : 0.10000000000000001,
+						"order" : 220,
+						"precision" : 2,
+						"step" : 0.01,
+						"text" : "... Bloom Intensity",
+						"type" : "slider",
+						"editable" : true,
+						"value" : 0.80000000000000004
+					},
+					"bloom_threshold" : 
+					{
+						"condition" : "enable_bloom.value && fluid_settings.value",
+						"fraction" : true,
+						"max" : 1,
+						"min" : 0,
+						"order" : 221,
+						"precision" : 2,
+						"step" : 0.01,
+						"text" : "... Bloom Threshold",
+						"type" : "slider",
+						"editable" : true,
+						"value" : 0.59999999999999998
+					},
+					"bloom_soft_knee" :
+					{
+						"condition" : "enable_bloom.value && fluid_settings.value",
+						"fraction" : true,
+						"max" : 1,
+						"min" : 0,
+						"order" : 222,
+						"precision" : 2,
+						"step" : 0.01,
+						"text" : "... Bloom Soft Knee",
+						"type" : "slider",
+						"editable" : true,
+						"value" : 0.7
+					},
+				"sunrays" :
+				{
+					"condition" : "fluid_settings.value",
+					"order" : 250,
+					"text" : "... Enable Sunrays",
+					"type" : "bool",
+					"value" : true
+				},
+					"sunrays_weight" :
+					{
+						"condition" : "fluid_settings.value && sunrays.value",
+						"fraction" : true,
+						"max" : 10,
+						"min" : 0.1,
+						"step" : 0.1,
+						"precision" : 2,
+						"order" : 252,
+						"text" : "... Sunrays Weight",
+						"type" : "slider",
+						"editable" : true,
+						"value": 2
+					},
+
+
+			"splat_settings" :
 			{
-				"condition" : "stream_colors.value && num_streams.value > 0",
-				"order" : 142,
-				"text" : "Stream Color 1",
-				"type" : "color",
-				"value" : "0 1 0"
+				"order" : 300,
+				"text" : "===== Splat Settings ==========",
+				"type" : "bool",
+				"value" : false
 			},
-			"stream_color_2" : 
+				"idle_random_splats" : 
+				{
+					"condition" : "splat_settings.value",
+					"order" : 303,
+					"text" : "... Idle Random Splats",
+					"type" : "bool",
+					"value" : false
+				},
+				"random_splat_amount" : 
+				{
+					"condition" : "splat_settings.value && idle_random_splats.value",
+					"fraction" : true,
+					"max" : 100,
+					"min" : 1,
+					"order" : 304,
+					"precision" : 2,
+					"step" : 1,
+					"text" : "... Random Splat Amount",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 10
+				},
+				"random_splat_interval" : 
+				{
+					"condition" : "splat_settings.value && idle_random_splats.value",
+					"fraction" : true,
+					"max" : 5,
+					"min" : 0,
+					"order" : 305,
+					"precision" : 2,
+					"step" : 0.01,
+					"text" : "... Random Splat Interval",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 1
+				},
+				"sound_splats" : 
+				{
+					"condition" : "splat_settings.value",
+					"order" : 310,
+					"text" : "... Enable Sound Splats",
+					"type" : "bool",
+					"value" : false
+				},
+				"splat_strength" : 
+				{
+					"condition" : "splat_settings.value && sound_splats.value",
+					"fraction" : false,
+					"max" : 100,
+					"min" : 0,
+					"order" : 311,
+					"text" : "... Splat Strength",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 70
+				},
+				"sound_splat_amount" :
+				{
+					"condition" : "splat_settings.value && sound_splats.value",
+					"fraction" : true,
+					"max" : 100,
+					"min" : 1,
+					"precision" : 2,
+					"step" : 1,
+					"order" : 312,
+					"text" : "... Sound Splat Amount",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 15
+				},
+				"color_update_speed":
+				{
+					"condition" : "splat_settings.value",
+					"order" : 319,
+					"max" : 20,
+					"min" : 0,
+					"text" : "... Color Update Speed",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 8
+				},
+				"colorful" : 
+				{
+					"condition" : "splat_settings.value",
+					"order" : 320,
+					"text" : "... Random Color",
+					"type" : "bool",
+					"value" : true
+				},
+				"more_colors" : 
+				{
+					"condition" : "splat_settings.value && !colorful.value",
+					"order" : 321,
+					"text" : "... More Colors",
+					"type" : "bool",
+					"value" : false
+				},
+				
+				"splat_color" : 
+				{
+					"condition" : "splat_settings.value && !colorful.value",
+					"order" : 322,
+					"text" : "... Splat Color",
+					"type" : "color",
+					"value" : "0 1 0"
+				},
+				"splat_color_2" : 
+				{
+					"condition" : "splat_settings.value && more_colors.value && !colorful.value",
+					"order" : 323,
+					"text" : "... Splat Color 2",
+					"type" : "color",
+					"value" : "0 1 1"
+				},
+				"splat_color_3" : 
+				{
+					"condition" : "splat_settings.value && more_colors.value && !colorful.value",
+					"order" : 324,
+					"text" : "... Splat Color 3",
+					"type" : "color",
+					"value" : "0 0 1"
+				},
+				"splat_color_4" : 
+				{
+					"condition" : "splat_settings.value && more_colors.value && !colorful.value",
+					"order" : 325,
+					"text" : "... Splat Color 4",
+					"type" : "color",
+					"value" : "1 0 0"
+				},
+				"splat_color_5" : 
+				{
+					"condition" : "splat_settings.value && more_colors.value && !colorful.value",
+					"order" : 326,
+					"text" : "... Splat Color 5",
+					"type" : "color",
+					"value" : "0.9411764705882353 1 0"
+				},
+				"splat_radius" : 
+				{
+					"condition" : "splat_settings.value",
+					"fraction" : true,
+					"max" : 1,
+					"min" : 0.01,
+					"order" : 327,
+					"precision" : 2,
+					"step" : 0.01,
+					"text" : "... Splat Radius",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 0.3
+				},
+
+
+			"stream_settings" :
 			{
-				"condition" : "stream_colors.value && num_streams.value > 1",
-				"order" : 143,
-				"text" : "Stream Color 2",
-				"type" : "color",
-				"value" : "0 1 1"
+				"order" : 400,
+				"text" : "===== Stream Settings =========",
+				"type" : "bool",
+				"value" : false
 			},
-			"stream_color_3" : 
-			{
-				"condition" : "stream_colors.value && num_streams.value > 2",
-				"order" : 144,
-				"text" : "Stream Color 3",
-				"type" : "color",
-				"value" : "0 0 1"
-			},
-			"stream_color_4" : 
-			{
-				"condition" : "stream_colors.value && num_streams.value > 3",
-				"order" : 145,
-				"text" : "Stream Color 4",
-				"type" : "color",
-				"value" : "1 0 0"
-			},
-			"stream_color_5" : 
-			{
-				"condition" : "stream_colors.value && num_streams.value > 4",
-				"order" : 146,
-				"text" : "Stream Color 5",
-				"type" : "color",
-				"value" : "0.9411764705882353 1 0"
-			},
-			"stream_size" : 
-			{
-				"condition" : "num_streams.value > 0",
-				"fraction" : false,
-				"max" : 50,
-				"min" : 0.01,
-				"step" : 0.01,
-				"precision" : 2,
-				"order" : 150,
-				"text" : "Stream Size",
-				"type" : "slider",
-				"value" : 5
-			},
-			"stream_speed" : 
-			{
-				"condition" : "num_streams.value > 0",
-				"fraction" : false,
-				"max" : 10,
-				"min" : 0,
-				"order" : 151,
-				"text" : "Stream Velocity",
-				"type" : "slider",
-				"value" : 5
-			},
-			"max_stream_speed" : 
-			{
-				"condition" : "num_streams.value > 0",
-				"fraction" : false,
-				"max" : 10,
-				"min" : 0,
-				"order" : 152,
-				"text" : "Max Stream Velocity",
-				"type" : "slider",
-				"value" : 5
-			},
-			"stream_gravity" : 
-			{
-				"condition" : "num_streams.value > 0",
-				"fraction" : false,
-				"max" : 1000,
-				"min" : 0,
-				"order" : 153,
-				"text" : "Stream Gravity",
-				"type" : "slider",
-				"value" : 5
-			},
-			"stream_direction_variability" : 
-			{
-				"condition" : "num_streams.value > 0",
-				"fraction" : false,
-				"max" : 1,
-				"min" : 0,
-				"precision" : 2,
-				"step" : 0.01,
-				"order" : 154,
-				"text" : "Stream Variability",
-				"type" : "slider",
-				"value" : 0.05
-			},
-			"stream_brightness" : 
-			{
-				"condition" : "num_streams.value > 0",
-				"fraction" : false,
-				"max" : 1,
-				"min" : 0,
-				"precision" : 2,
-				"step" : 0.01,
-				"order" : 155,
-				"text" : "Stream Brightness",
-				"type" : "slider",
-				"value" : 1
-			},
-			"bass_boost" :
-			{
-				"condition" : "num_streams.value > 0",
-				"fraction" : false,
-				"max" : 10,
-				"min" : 0,
-				"order" : 156,
-				"text" : "Bass boost",
-				"type" : "slider",
-				"value" : 2
-			}
+				"num_streams" : 
+				{
+					"condition" : "stream_settings.value",
+					"fraction" : false,
+					"max" : 5,
+					"min" : 0,
+					"order" : 410,
+					"text" : "... Number of Streams",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 2
+				},
+				"splat_color_for_stream" :
+				{
+					"condition" : "stream_settings.value",
+					"order" : 411,
+					"text" : "... Use Splat Colors",
+					"type" : "bool",
+					"value" : true
+				},
+				"stream_color_1" : 
+				{
+					"condition" : "stream_settings.value && !splat_color_for_stream.value",
+					"order" : 412,
+					"text" : "... Stream Color 1",
+					"type" : "color",
+					"value" : "0 1 0"
+				},
+				"stream_color_2" : 
+				{
+					"condition" : "stream_settings.value && !splat_color_for_stream.value && num_streams.value > 1",
+					"order" : 413,
+					"text" : "... Stream Color 2",
+					"type" : "color",
+					"value" : "0 1 1"
+				},
+				"stream_color_3" : 
+				{
+					"condition" : "stream_settings.value && !splat_color_for_stream.value && num_streams.value > 2",
+					"order" : 414,
+					"text" : "... Stream Color 3",
+					"type" : "color",
+					"value" : "0 0 1"
+				},
+				"stream_color_4" : 
+				{
+					"condition" : "stream_settings.value && !splat_color_for_stream.value && num_streams.value > 3",
+					"order" : 415,
+					"text" : "... Stream Color 4",
+					"type" : "color",
+					"value" : "1 0 0"
+				},
+				"stream_color_5" : 
+				{
+					"condition" : "stream_settings.value && !splat_color_for_stream.value && num_streams.value > 4",
+					"order" : 416,
+					"text" : "... Stream Color 5",
+					"type" : "color",
+					"value" : "0.9411764705882353 1 0"
+				},
+				"stream_size" : 
+				{
+					"condition" : "stream_settings.value",
+					"fraction" : true,
+					"max" : 2,
+					"min" : 0.01,
+					"precision" : 2,
+					"step" : 0.01,
+					"order" : 420,
+					"text" : "... Stream Size",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 0.7
+				},
+				"stream_speed" : 
+				{
+					"condition" : "stream_settings.value",
+					"fraction" : false,
+					"max" : 2.0,
+					"min" : 0.1,
+					"precision" : 2,
+					"step" : 0.1,
+					"order" : 421,
+					"text" : "... Velocity",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 0.7
+				},
+				"max_stream_speed" : 
+				{
+					"condition" : "stream_settings.value",
+					"fraction" : false,
+					"max" : 2,
+					"min" : 0.1,
+					"precision" : 2,
+					"step" : 0.1,
+					"order" : 422,
+					"text" : "... Max Velocity",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 1.2
+				},
+				"stream_speed_decay" :
+				{
+					"condition" : "stream_settings.value",
+					"fraction" : false,
+					"max" : 0.99,
+					"min" : 0,
+					"precision" : 2,
+					"step" : 0.01,
+					"order" : 423,
+					"text" : "... Velocity Decay",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 0.26
+				},
+				"stream_strength" : 
+				{
+					"condition" : "stream_settings.value",
+					"fraction" : false,
+					"max" : 1000,
+					"min" : 0,
+					"order" : 430,
+					"text" : "... Stream Strength",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 225
+				},
+				"stream_gravity" : 
+				{
+					"condition" : "stream_settings.value",
+					"fraction" : false,
+					"max" : 1000,
+					"min" : 0,
+					"order" : 431,
+					"text" : "... Gravity",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 200
+				},
+				"stream_repel_force" : 
+				{
+					"condition" : "stream_settings.value",
+					"fraction" : false,
+					"max" : 1000,
+					"min" : 0,
+					"order" : 432,
+					"text" : "... Repelling Force",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 0
+				},
+				"stream_direction_variability" : 
+				{
+					"condition" : "stream_settings.value",
+					"fraction" : false,
+					"max" : 1,
+					"min" : 0,
+					"precision" : 2,
+					"step" : 0.01,
+					"order" : 433,
+					"text" : "... Directional Variability",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 0.05
+				},
+				"stream_brightness" : 
+				{
+					"condition" : "stream_settings.value",
+					"fraction" : false,
+					"max" : 1,
+					"min" : 0,
+					"precision" : 2,
+					"step" : 0.01,
+					"order" : 434,
+					"text" : "... Brightness",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 0.5
+				},
+				"stream_mass" : 
+				{
+					"condition" : "stream_settings.value",
+					"fraction" : false,
+					"max" : 10,
+					"min" : 0.1,
+					"precision" : 2,
+					"step" : 0.1,
+					"order" : 524,
+					"text" : "... Mass",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 1.5
+				},
+				"bounce_strength" :
+				{
+					"condition" : "stream_settings.value",
+					"fraction" : false,
+					"max" : 30,
+					"min" : 0,
+					"precision" : 2,
+					"step" : 1,
+					"order" : 525,
+					"text" : "... Bounce Strength",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 10
+				}
+
 		},
 		"supportsaudioprocessing" : true
 	},
@@ -527,6 +820,6 @@
 	"tags" : [ "Abstract" ],
 	"title" : "Smoke Stream",
 	"type" : "Web",
-	"version" : 3,
+	"version" : 1,
 	"visibility" : "public",
 }

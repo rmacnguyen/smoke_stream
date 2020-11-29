@@ -189,16 +189,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 config.POINTER_COLOR = splatColors;
             }
 
-            if (properties.splat_color_for_stream) config.STREAM_COLORS = !properties.splat_color_for_stream.value;
-
             if (properties.stream_color_1) streamColors[0] = rgbToPointerColor(properties.stream_color_1.value);
             if (properties.stream_color_2) streamColors[1] = rgbToPointerColor(properties.stream_color_2.value);
             if (properties.stream_color_3) streamColors[2] = rgbToPointerColor(properties.stream_color_3.value);
             if (properties.stream_color_4) streamColors[3] = rgbToPointerColor(properties.stream_color_4.value);
             if (properties.stream_color_5) streamColors[4] = rgbToPointerColor(properties.stream_color_5.value);
              
+            if (properties.splat_color_for_stream) config.STREAM_COLORS = !properties.splat_color_for_stream.value;
+
+            if (properties.stream_color_1 || 
+                properties.stream_color_2 ||
+                properties.stream_color_3 ||
+                properties.stream_color_4 ||
+                properties.stream_color_5) {
+                for (let i = 0; i < streams.length; i++) {
+                    streams[i].color = Object.assign({}, config.STREAM_COLOR[wrap(i, 0, config.STREAM_COLOR.length - 1)]);
+                }
+            }
+            
             if (properties.splat_color_for_stream && !properties.splat_color_for_stream.value) {
                 config.STREAM_COLOR = streamColors;
+                for (let i = 0; i < streams.length; i++) {
+                    streams[i].color = Object.assign({}, config.STREAM_COLOR[wrap(i, 0, config.STREAM_COLOR.length - 1)]);
+                }
             }
 
             if (properties.use_background_image) config.TRANSPARENT = properties.use_background_image.value;
@@ -319,7 +332,9 @@ class StreamPrototype {
         this.ay = 0;
         this.mass = config.STREAM_MASS;
         this.last_updated = Date.now();
-        this.color = config.COLORFUL ? generateColor() : config.POINTER_COLOR.getRandom();
+        this.color = config.STREAM_COLORS ? config.STREAM_COLOR[streams.length] : (
+            config.COLORFUL ? generateColor() : config.POINTER_COLOR.getRandom()
+        );
     }
 
     clamp(x, min = 0, max = 1) {
@@ -1352,7 +1367,7 @@ function resizeCanvas() {
 }
 
 function updateColors(dt) {
-    if (!config.COLORFUL) return;
+    // if (!config.COLORFUL) return;
 
     colorUpdateTimer += dt * config.COLOR_UPDATE_SPEED;
     if (colorUpdateTimer >= 1) {
@@ -1361,7 +1376,7 @@ function updateColors(dt) {
             p.color = config.COLORFUL ? generateColor() : config.POINTER_COLOR.getRandom();
         });
         streams.forEach(s => {
-            s.color = !config.STREAM_COLORS ? (config.COLORFUL ? generateColor() : config.POINTER_COLOR.getRandom()) : s.color;
+            s.color = config.STREAM_COLORS ? s.color : (config.COLORFUL ? generateColor() : config.POINTER_COLOR.getRandom());
         });
     }
 }
@@ -1725,7 +1740,7 @@ function normalizeColor(input) {
     return output;
 }
 
-function wrap (value, min, max) {
+function wrap(value, min, max) {
     let range = max - min;
     if (range == 0) return min;
     return (value - min) % range + min;
@@ -1817,13 +1832,7 @@ function generateStreams(amount) {
         let str = streams[s]; // str is a ref
         let timestep = str.updateVelocityAndPosition()
         
-        if (config.STREAM_COLORS) {
-            str.color = Object.assign({}, config.STREAM_COLOR[s]);
-        } else if (config.COLORFUL) {
-            str.color = Object.assign({}, generateColor());
-        } else {
-            str.color = Object.assign({}, config.POINTER_COLOR.getRandom());
-        }
+
         
         let color = Object.assign({}, str.color);
         color.r = color.r * config.STREAM_BRIGHTNESS * (config.COLORFUL ? 3 : 1) * Math.pow(1 + amt, .3);

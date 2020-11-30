@@ -35,8 +35,8 @@ function idleSplatsFunction() {
 
 let config = {
     // Default values
-    SIM_RESOLUTION: 1024,
-    DYE_RESOLUTION: 8192,
+    SIM_RESOLUTION: 256,
+    DYE_RESOLUTION: 512,
     DENSITY_DISSIPATION: 3.3,
     DENSITY_DISSIPATION_MULTIPLIER: 1,
     VELOCITY_DISSIPATION: 0.91,

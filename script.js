@@ -27,10 +27,7 @@ Array.prototype.getRandom = function() {
     return this[Math.floor(Math.random() * this.length)];
 };
 
-let splatColors = [{ r: 0, g: 0.15, b: 0 }];
-let streamColors = [{ r: 0, g: 0.15, b: 0 }];
 let idleSplats;
-let thisStep = 0;
 
 function idleSplatsFunction() {
     multipleSplats(parseInt(Math.random() * config.RANDOM_AMOUNT) + (config.RANDOM_AMOUNT / 2) + 1);
@@ -68,7 +65,7 @@ let config = {
     ZOOM_PERCENT: 100,
     ZOOM_X: 0,
     ZOOM_Y: 0,
-    POINTER_COLOR: [{ r: 0.15, g: 0.15, b: 0 }],
+    SPLAT_COLOR: [{ r: 0.15, g: 0.15, b: 0 }],
     SOUND_SENSITIVITY: 3.75,
     AUDIO_RESPONSIVE: true,
     FREQ_RANGE: 8,
@@ -94,6 +91,16 @@ let config = {
     STREAM_BRIGHTNESS: 0.5,
     STREAM_COLORS: false,
     STREAM_COLOR: [{ r: 0.15, g: 0, b: 0 },{ r: 0, g: 0.15, b: 0 },{ r: 0, g: 0, b: 0.15 }],
+    STREAM_COLOR_1: { r: 38, g: 0, b: 0 },
+    STREAM_COLOR_2: { r: 0, g: 38, b: 0 },
+    STREAM_COLOR_3: { r: 0, g: 0, b: 38 },
+    STREAM_COLOR_4: { r: 0, g: 38, b: 38 },
+    STREAM_COLOR_5: { r: 38, g: 38, b: 0 },
+    COLOR_1: { r: 38, g: 0, b: 0 },
+    COLOR_2: { r: 0, g: 38, b: 0 },
+    COLOR_3: { r: 0, g: 0, b: 38 },
+    COLOR_4: { r: 0, g: 38, b: 38 },
+    COLOR_5: { r: 38, g: 38, b: 0 },
     STREAM_MASS: 1.5,
     STREAM_REPEL_FORCE: 0,
     BOUNCE_STRENGTH: 30
@@ -104,116 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
         applyUserProperties: (properties) => {
             // This is called on load and when a property is changed in the UI.
             // Only the changed property is passed in.
-            if (properties.bloom_intensity) config.BLOOM_INTENSITY = properties.bloom_intensity.value;
-            if (properties.bloom_threshold) config.BLOOM_THRESHOLD = properties.bloom_threshold.value;
-            if (properties.bloom_soft_knee) config.BLOOM_SOFT_KNEE = properties.bloom_soft_knee.value;
-            if (properties.sunrays) {
-                config.SUNRAYS = properties.sunrays.value;
-                updateKeywords();
-                initFramebuffers();
-            }
-            if (properties.sunrays_resolution) config.SUNRAYS_RESOLUTION = properties.sunrays_resolution.value;
-            if (properties.sunrays_weight) config.SUNRAYS_WEIGHT = properties.sunrays_weight.value;
-            if (properties.colorful) config.COLORFUL = properties.colorful.value;
-            if (properties.density_diffusion_multiplier) {
-                config.DENSITY_DISSIPATION /= config.DENSITY_DISSIPATION_MULTIPLIER;
-                if (properties.density_diffusion_multiplier.value == 0) {
-                    config.DENSITY_DISSIPATION_MULTIPLIER = 0.001;
-                } else {
-                    config.DENSITY_DISSIPATION_MULTIPLIER = properties.density_diffusion_multiplier.value;
-                } 
-                config.DENSITY_DISSIPATION *= config.DENSITY_DISSIPATION_MULTIPLIER;
-            }
-            if (properties.density_diffusion) {
-                config.DENSITY_DISSIPATION = properties.density_diffusion.value * config.DENSITY_DISSIPATION_MULTIPLIER;
-            }
-            if (properties.velocity_diffusion_multiplier) {
-                config.VELOCITY_DISSIPATION /= config.VELOCITY_DISSIPATION_MULTIPLIER;
-                if (properties.velocity_diffusion_multiplier.value == 0) {
-                    config.VELOCITY_DISSIPATION_MULTIPLIER = 0.001;
-                } else {
-                    config.VELOCITY_DISSIPATION_MULTIPLIER = properties.velocity_diffusion_multiplier.value;
-                } 
-                config.VELOCITY_DISSIPATION *= config.VELOCITY_DISSIPATION_MULTIPLIER;
-            }
-            if (properties.velocity_diffusion) {
-                config.VELOCITY_DISSIPATION = properties.velocity_diffusion.value * config.VELOCITY_DISSIPATION_MULTIPLIER;
-            }
-            if (properties.enable_bloom) {
-                config.BLOOM = properties.enable_bloom.value;
-                updateKeywords();
-                initFramebuffers();
-            }
-            if (properties.paused) config.PAUSED = properties.paused.value;
-            if (properties.pressure_diffusion) config.PRESSURE = properties.pressure_diffusion.value;
-            if (properties.curl) config.CURL = properties.curl.value;
-            // if (properties.splat_force) config.SPLAT_FORCE = properties.splat_force.value;
-            if (properties.shading) {
-                config.SHADING = properties.shading.value;
-                updateKeywords();
-                initFramebuffers();
-            }
-            if (properties.splat_radius) config.SPLAT_RADIUS = properties.splat_radius.value;
-            if (properties.sound_sensitivity) config.SOUND_SENSITIVITY = properties.sound_sensitivity.value;
-            if (properties.audio_responsive) config.AUDIO_RESPONSIVE = properties.audio_responsive.value;
-            if (properties.simulation_resolution) {
-                config.SIM_RESOLUTION = properties.simulation_resolution.value;
-                initFramebuffers();
-            }
-            if (properties.dye_resolution) {
-                config.DYE_RESOLUTION = properties.dye_resolution.value;
-                initFramebuffers();
-            }
-            if (properties.splat_color) {
-                splatColors[0] = rgbToPointerColor(properties.splat_color.value);
-                if (!config.COLORFUL) config.POINTER_COLOR = [splatColors[0]];
-            }
-            if (properties.color_update_speed) config.COLOR_UPDATE_SPEED = properties.color_update_speed.value;
-            if (properties.splat_color_2) splatColors[1] = rgbToPointerColor(properties.splat_color_2.value);
-            if (properties.splat_color_3) splatColors[2] = rgbToPointerColor(properties.splat_color_3.value);
-            if (properties.splat_color_4) splatColors[3] = rgbToPointerColor(properties.splat_color_4.value);
-            if (properties.splat_color_5) splatColors[4] = rgbToPointerColor(properties.splat_color_5.value);
-            if (properties.background_color) {
-                let c = properties.background_color.value.split(" "),
-                r = Math.floor(c[0]*255),
-                g = Math.floor(c[1]*255),
-                b = Math.floor(c[2]*255);
-                document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
-                config.BACK_COLOR.r = r;
-                config.BACK_COLOR.g = g;
-                config.BACK_COLOR.b = b;
-            }
-            if (properties.more_colors && !properties.more_colors.value) {
-                config.POINTER_COLOR = [splatColors[0]];
-            } else if (properties.more_colors && properties.more_colors.value) {
-                config.POINTER_COLOR = splatColors;
-            }
 
-            if (properties.stream_color_1) streamColors[0] = rgbToPointerColor(properties.stream_color_1.value);
-            if (properties.stream_color_2) streamColors[1] = rgbToPointerColor(properties.stream_color_2.value);
-            if (properties.stream_color_3) streamColors[2] = rgbToPointerColor(properties.stream_color_3.value);
-            if (properties.stream_color_4) streamColors[3] = rgbToPointerColor(properties.stream_color_4.value);
-            if (properties.stream_color_5) streamColors[4] = rgbToPointerColor(properties.stream_color_5.value);
-             
-            if (properties.splat_color_for_stream) config.STREAM_COLORS = !properties.splat_color_for_stream.value;
-
-            if (properties.stream_color_1 || 
-                properties.stream_color_2 ||
-                properties.stream_color_3 ||
-                properties.stream_color_4 ||
-                properties.stream_color_5) {
-                for (let i = 0; i < streams.length; i++) {
-                    streams[i].color = Object.assign({}, config.STREAM_COLOR[wrap(i, 0, config.STREAM_COLOR.length - 1)]);
-                }
-            }
-            
-            if (properties.splat_color_for_stream && !properties.splat_color_for_stream.value) {
-                config.STREAM_COLOR = streamColors;
-                for (let i = 0; i < streams.length; i++) {
-                    streams[i].color = Object.assign({}, config.STREAM_COLOR[wrap(i, 0, config.STREAM_COLOR.length - 1)]);
-                }
-            }
-
+            // general properties
             if (properties.use_background_image) config.TRANSPARENT = properties.use_background_image.value;
             if (properties.background_image) canvas.style.backgroundImage = `url("file:///${properties.background_image.value}")`;
             if (properties.repeat_background) canvas.style.backgroundRepeat = properties.repeat_background.value ? "repeat" : "no-repeat";
@@ -256,11 +155,132 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             if (properties.splat_on_click) config.SPLAT_ON_CLICK = properties.splat_on_click.value;
             if (properties.show_mouse_movement) config.SHOW_MOUSE_MOVEMENT = properties.show_mouse_movement.value;
+            if (properties.pointer_size) config.POINTER_SIZE = properties.pointer_size.value;
             if (properties.mouse_gravity) config.MOUSE_GRAVITY = properties.mouse_gravity.value;
+            if (properties.sound_sensitivity) config.SOUND_SENSITIVITY = properties.sound_sensitivity.value;
+            if (properties.audio_responsive) config.AUDIO_RESPONSIVE = properties.audio_responsive.value;
+            if (properties.background_color) {
+                let c = WPEColorToRGB(properties.background_color.value);
+                document.body.style.backgroundColor = `rgb(${c.r}, ${c.g}, ${c.b})`;
+                config.BACK_COLOR = Object.assign({}, c);
+            }
+            if (properties.zoom_percent) {
+                config.ZOOM_PERCENT = properties.zoom_percent.value;
+                config.ZOOM_X = canvas.width - canvas.width / (config.ZOOM_PERCENT / 100);
+                config.ZOOM_Y = canvas.height - canvas.height / (config.ZOOM_PERCENT / 100);
+            }
+
+            // fluid properties
+            if (properties.simulation_resolution) {
+                config.SIM_RESOLUTION = properties.simulation_resolution.value;
+                initFramebuffers();
+            }
+            if (properties.dye_resolution) {
+                config.DYE_RESOLUTION = properties.dye_resolution.value;
+                initFramebuffers();
+            }
+            if (properties.shading) {
+                config.SHADING = properties.shading.value;
+                updateKeywords();
+            }
+            if (properties.enable_bloom) {
+                config.BLOOM = properties.enable_bloom.value;
+                updateKeywords();
+            }
+            if (properties.bloom_intensity) config.BLOOM_INTENSITY = properties.bloom_intensity.value;
+            if (properties.bloom_threshold) config.BLOOM_THRESHOLD = properties.bloom_threshold.value;
+            if (properties.bloom_soft_knee) config.BLOOM_SOFT_KNEE = properties.bloom_soft_knee.value;
+            if (properties.sunrays) {
+                config.SUNRAYS = properties.sunrays.value;
+                updateKeywords();
+            }
+            if (properties.sunrays_resolution) config.SUNRAYS_RESOLUTION = properties.sunrays_resolution.value;
+            if (properties.sunrays_weight) config.SUNRAYS_WEIGHT = properties.sunrays_weight.value;            
+            if (properties.density_diffusion_multiplier) {
+                config.DENSITY_DISSIPATION /= config.DENSITY_DISSIPATION_MULTIPLIER;
+                if (properties.density_diffusion_multiplier.value == 0) {
+                    config.DENSITY_DISSIPATION_MULTIPLIER = 0.001;
+                } else {
+                    config.DENSITY_DISSIPATION_MULTIPLIER = properties.density_diffusion_multiplier.value;
+                } 
+                config.DENSITY_DISSIPATION *= config.DENSITY_DISSIPATION_MULTIPLIER;
+            }
+            if (properties.density_diffusion) {
+                config.DENSITY_DISSIPATION = properties.density_diffusion.value * config.DENSITY_DISSIPATION_MULTIPLIER;
+            }
+            if (properties.velocity_diffusion_multiplier) {
+                config.VELOCITY_DISSIPATION /= config.VELOCITY_DISSIPATION_MULTIPLIER;
+                if (properties.velocity_diffusion_multiplier.value == 0) {
+                    config.VELOCITY_DISSIPATION_MULTIPLIER = 0.001;
+                } else {
+                    config.VELOCITY_DISSIPATION_MULTIPLIER = properties.velocity_diffusion_multiplier.value;
+                } 
+                config.VELOCITY_DISSIPATION *= config.VELOCITY_DISSIPATION_MULTIPLIER;
+            }
+            if (properties.velocity_diffusion) {
+                config.VELOCITY_DISSIPATION = properties.velocity_diffusion.value * config.VELOCITY_DISSIPATION_MULTIPLIER;
+            }
+            if (properties.pressure_diffusion) config.PRESSURE = properties.pressure_diffusion.value;
+            if (properties.curl) config.CURL = properties.curl.value;
+
+            if (properties.paused) config.PAUSED = properties.paused.value;
+            // if (properties.splat_force) config.SPLAT_FORCE = properties.splat_force.value;
+            
+            // splat properties
+            if (properties.colorful) config.COLORFUL = properties.colorful.value;
+            if (properties.splat_radius) config.SPLAT_RADIUS = properties.splat_radius.value;
+            if (properties.color_update_speed) config.COLOR_UPDATE_SPEED = properties.color_update_speed.value;
+            if (properties.splat_color) {
+                config.COLOR_1 = WPEColorToRGB(properties.splat_color.value);
+                updateColors(1);
+            }
+            if (properties.splat_color_2) {
+                config.COLOR_2 = WPEColorToRGB(properties.splat_color_2.value);
+                updateColors(1);
+            }
+            if (properties.splat_color_3) {
+                config.COLOR_3 = WPEColorToRGB(properties.splat_color_3.value);
+                updateColors(1);
+            }
+            if (properties.splat_color_4) {
+                config.COLOR_4 = WPEColorToRGB(properties.splat_color_4.value);
+                updateColors(1);
+            }
+            if (properties.splat_color_5) {
+                config.COLOR_5 = WPEColorToRGB(properties.splat_color_5.value);
+                updateColors(1);
+            }
+
+            if (properties.stream_color_1) {
+                config.STREAM_COLOR_1 = WPEColorToRGB(properties.stream_color_1.value);
+                updateStreams();
+            }
+            if (properties.stream_color_2) {
+                config.STREAM_COLOR_2 = WPEColorToRGB(properties.stream_color_2.value);
+                updateStreams();
+            }
+            if (properties.stream_color_3) {
+                config.STREAM_COLOR_3 = WPEColorToRGB(properties.stream_color_3.value);
+                updateStreams();
+            }
+            if (properties.stream_color_4) {
+                config.STREAM_COLOR_4 = WPEColorToRGB(properties.stream_color_4.value);
+                updateStreams();
+            }
+            if (properties.stream_color_5) {
+                config.STREAM_COLOR_5 = WPEColorToRGB(properties.stream_color_5.value);
+                updateStreams();
+            }
+
+            if (properties.splat_color_for_stream) {
+                config.STREAM_COLORS = !properties.splat_color_for_stream.value;
+                updateStreams();
+            }
+
+            // stream properties
             if (properties.num_streams) {
                 config.NUM_STREAMS = properties.num_streams.value;
-                while (streams.length < config.NUM_STREAMS) streams.push(new StreamPrototype);
-                while (streams.length > config.NUM_STREAMS) streams.pop();
+                updateStreams();
             }
             if (properties.stream_size) config.STREAM_SIZE = properties.stream_size.value;
             if (properties.stream_speed) config.STREAM_SPEED = properties.stream_speed.value;
@@ -273,17 +293,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (properties.sound_splats) config.SOUND_SPLATS = properties.sound_splats.value;
             if (properties.sound_splat_amount) config.SOUND_SPLAT_AMOUNT = properties.sound_splat_amount.value;
             if (properties.splat_strength) config.SPLAT_STRENGTH = properties.splat_strength.value;
-            if (properties.pointer_size) config.POINTER_SIZE = properties.pointer_size.value;
             if (properties.stream_mass) {
                 config.STREAM_MASS = properties.stream_mass.value;
-                for (let s=0; s < config.NUM_STREAMS; s++) {
-                    streams[s].mass = config.STREAM_MASS;
-                }
-            }
-            if (properties.zoom_percent) {
-                config.ZOOM_PERCENT = properties.zoom_percent.value;
-                config.ZOOM_X = canvas.width - canvas.width / (config.ZOOM_PERCENT / 100);
-                config.ZOOM_Y = canvas.height - canvas.height / (config.ZOOM_PERCENT / 100);
+                updateStreams();
             }
             if (properties.bounce_strength) config.BOUNCE_STRENGTH = properties.bounce_strength.value;
             if (properties.stream_repel_force) config.STREAM_REPEL_FORCE = properties.stream_repel_force.value;
@@ -292,20 +304,65 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.wallpaperRegisterAudioListener((audioArray) => {
         if (!config.AUDIO_RESPONSIVE) return;
-        if (audioArray[0] > 5) return;
-
         let bass = 0.0;
         let half = Math.floor(audioArray.length / 2);
+        let freqRange = config.FREQ_RANGE;
+        let webFactor = 1;
 
-        for (let i = 0; i <= config.FREQ_RANGE; i++) {
+        if (config.IS_WEB) {
+            audioArray.reverse();
+            freqRange = Math.floor(freqRange / 4);
+            webFactor = 0.2;
+        } else if (audioArray[0] > 5) {
+            return;
+        }
+
+        // let arr = [0, 0, 0, 0, 0, 0, 0, 0];
+        // let h = arr.length / 2;
+        // for (let i = 0; i < arr.length; i++) {
+        //     for (let j = 0; j < audioArray.length / arr.length; j++) {
+        //         arr[i] += audioArray[i * Math.floor(audioArray.length / arr.length) + j];
+        //     }
+        //     arr[i] = Math.floor(arr[i] * 100);
+        // }
+        // console.log(arr);
+
+        // let arr = [0, 0, 0, 0, 0, 0, 0, 0];
+        // for (let i = 0; i < arr.length; i++) {
+        //     for (let j = 0; j < half / 8 / arr.length; j++) {
+        //         arr[i] += audioArray[i * Math.floor(half / 8 / arr.length) + j];
+        //     }
+        //     arr[i] = Math.floor(arr[i] * 100);
+        // }
+        // console.log(arr);
+
+        for (let i = 0; i <= freqRange; i++) {
             bass += audioArray[i + config.FREQ_RANGE_START];
             bass += audioArray[half + (i + config.FREQ_RANGE_START)];
         }
-        bass /= (config.FREQ_RANGE * 2);
-        if (config.SOUND_SPLATS) multipleSplats(Math.floor((bass * config.SOUND_SENSITIVITY / 10) * config.SOUND_SPLAT_AMOUNT));
-        if (config.NUM_STREAMS > 0) generateStreams(bass);
+        bass /= (freqRange * 2);
+        if (config.SOUND_SPLATS) multipleSplats(Math.floor((bass * config.SOUND_SENSITIVITY / 10) * config.SOUND_SPLAT_AMOUNT * webFactor));
+        if (config.NUM_STREAMS > 0) generateStreams(bass * webFactor);
     });
 });
+
+function updateStreams() {
+    config.STREAM_COLOR = [
+        rgbToPointerColor(config.STREAM_COLOR_1),
+        rgbToPointerColor(config.STREAM_COLOR_2),
+        rgbToPointerColor(config.STREAM_COLOR_3),
+        rgbToPointerColor(config.STREAM_COLOR_4),
+        rgbToPointerColor(config.STREAM_COLOR_5),
+    ]
+    while (streams.length < config.NUM_STREAMS) streams.push(new StreamPrototype);
+    while (streams.length > config.NUM_STREAMS) streams.pop();
+    for (let s = 0; s < streams.length; s++) {
+        streams[s].mass = config.STREAM_MASS;
+        if (config.STREAM_COLORS) {
+            streams[s].color = Object.assign({}, config.STREAM_COLOR[wrap(s, 0, config.STREAM_COLOR.length - 1)]);
+        }
+    }
+}
 
 class PointerPrototype {
     constructor() {
@@ -318,7 +375,9 @@ class PointerPrototype {
         this.deltaY = 0;
         this.down = false;
         this.moved = false;
-        this.color = config.COLORFUL ? generateColor() : config.POINTER_COLOR.getRandom();
+        this.color = (config.COLORFUL)
+            ? generateColor()
+            : rgbToPinterColor(config.SPLAT_COLOR.getRandom());
     }
 }
 
@@ -332,9 +391,11 @@ class StreamPrototype {
         this.ay = 0;
         this.mass = config.STREAM_MASS;
         this.last_updated = Date.now();
-        this.color = config.STREAM_COLORS ? config.STREAM_COLOR[streams.length] : (
-            config.COLORFUL ? generateColor() : config.POINTER_COLOR.getRandom()
-        );
+        this.color = (config.STREAM_COLORS)
+            ? config.STREAM_COLOR[wrap(streams.length, 0, config.STREAM_COLOR.length - 1)]
+            : (config.COLORFUL)
+                ? generateColor()
+                : rgbToPointerColor(config.SPLAT_COLOR.getRandom());
     }
 
     clamp(x, min = 0, max = 1) {
@@ -342,10 +403,11 @@ class StreamPrototype {
     }
 
     bounce(x, y) {
-        let nX, nY, nD, d_n;
-        nX = x - this.x;
-        nY = y - this.y;
-        nD = Math.hypot(nX, nY)
+        let nX = x - this.x,
+            nY = y - this.y,
+            nD = Math.hypot(nX, nY),
+            d_n;
+
         if (nD > 0) {
             nX /= nD;
             nY /= nD;
@@ -397,11 +459,9 @@ class StreamPrototype {
 }
 
 let streams = [];
-while (streams.length < config.NUM_STREAMS) streams.push(new StreamPrototype);
-while (streams.length > config.NUM_STREAMS) streams.pop();
-
 let pointers = [];
 let splatStack = [];
+updateStreams();
 pointers.push(new PointerPrototype());
 
 const { gl, ext } = getWebGLContext(canvas);
@@ -1119,7 +1179,7 @@ let bloomFramebuffers = [];
 let sunrays;
 let sunraysTemp;
 
-let ditheringTexture = createTextureAsync('LDR_LLL1_0.png');
+let ditheringTexture = createTextureAsync('https://paveldogreat.github.io/WebGL-Fluid-Simulation/LDR_LLL1_0.png');
 
 const blurProgram            = new Program(blurVertexShader, blurShader);
 const copyProgram            = new Program(baseVertexShader, copyShader);
@@ -1308,6 +1368,7 @@ function createTextureAsync(url) {
     };
 
     let image = new Image();
+    image.crossOrigin = "anonymouse";
     image.onload = () => {
         obj.width = image.width;
         obj.height = image.height;
@@ -1367,16 +1428,25 @@ function resizeCanvas() {
 }
 
 function updateColors(dt) {
-    // if (!config.COLORFUL) return;
-
     colorUpdateTimer += dt * config.COLOR_UPDATE_SPEED;
+    config.SPLAT_COLOR = [
+        config.COLOR_1,
+        config.COLOR_2,
+        config.COLOR_3,
+        config.COLOR_4,
+        config.COLOR_5,
+    ]
     if (colorUpdateTimer >= 1) {
         colorUpdateTimer = wrap(colorUpdateTimer, 0, 1);
         pointers.forEach(p => {
-            p.color = config.COLORFUL ? generateColor() : config.POINTER_COLOR.getRandom();
+            p.color = config.COLORFUL ? generateColor() : rgbToPointerColor(config.SPLAT_COLOR.getRandom());
         });
         streams.forEach(s => {
-            s.color = config.STREAM_COLORS ? s.color : (config.COLORFUL ? generateColor() : config.POINTER_COLOR.getRandom());
+            s.color = (config.STREAM_COLORS)
+                ? s.color
+                : (config.COLORFUL)
+                    ? generateColor()
+                    : rgbToPointerColor(config.SPLAT_COLOR.getRandom());
         });
     }
 }
@@ -1591,7 +1661,7 @@ function splatPointer(pointer) {
 
 function multipleSplats(amount) {
     for (let i = 0; i < amount; i++) {
-        const color = config.COLORFUL ? generateColor() : Object.assign({}, config.POINTER_COLOR.getRandom());
+        const color = config.COLORFUL ? generateColor() : Object.assign({}, config.SPLAT_COLOR.getRandom());
         color.r *= 10.0;
         color.g *= 10.0;
         color.b *= 10.0;
@@ -1630,7 +1700,7 @@ function correctRadius(radius) {
 
 canvas.addEventListener('mouseenter', () => {
     pointers[0].down = true;
-    pointers[0].color = config.COLORFUL ? generateColor() : config.POINTER_COLOR.getRandom();
+    pointers[0].color = config.COLORFUL ? generateColor() : config.SPLAT_COLOR.getRandom();
 });
 
 canvas.addEventListener("mousedown", () => {
@@ -1812,32 +1882,37 @@ function RGBToHue(r, g, b) {
         h += 360;
   
     return h;
-  }
+}
 
 function rgbToPointerColor(color) {
-    let c = color.split(" ");
-    let hue = RGBToHue(c[0], c[1], c[2]);
-    let c2 = HSVtoRGB(hue/360, 1.0, 1.0);
-    c2.r *= 0.15;
-    c2.g *= 0.15;
-    c2.b *= 0.15;
-    return c2;
-};
+    let hue = RGBToHue(color.r, color.g, color.b),
+        c = HSVtoRGB(hue/360, 1.0, 1.0);
+
+    c.r *= 0.15;
+    c.g *= 0.15;
+    c.b *= 0.15;
+    return c;
+}
+
+function WPEColorToRGB(color) {
+    let c = color.split(" "),
+        r = Math.floor(c[0]*255),
+        g = Math.floor(c[1]*255),
+        b = Math.floor(c[2]*255);
+    return {r: r, g: g, b: b};
+}
 
 function generateStreams(amount) {
-    let amt = amount * config.SOUND_SENSITIVITY * 10;
-    let streamSize = config.STREAM_SIZE * Math.pow((Math.pow(amt - 1, 3) + 1), (amt > 1 ? 0.5 : 1));
+    let amt = amount * config.SOUND_SENSITIVITY * 10,
+        streamSize = config.STREAM_SIZE * Math.pow((Math.pow(amt - 1, 3) + 1), (amt > 1 ? 0.5 : 1));
     for (let s=0; s < streams.length; s++) {
         // update all stream positions and velocities
-        let str = streams[s]; // str is a ref
-        let timestep = str.updateVelocityAndPosition()
-        
-
-        
-        let color = Object.assign({}, str.color);
-        color.r = color.r * config.STREAM_BRIGHTNESS * (config.COLORFUL ? 3 : 1) * Math.pow(1 + amt, .3);
-        color.g = color.g * config.STREAM_BRIGHTNESS * (config.COLORFUL ? 3 : 1) * Math.pow(1 + amt, .3);
-        color.b = color.b * config.STREAM_BRIGHTNESS * (config.COLORFUL ? 3 : 1) * Math.pow(1 + amt, .3);
+        let str = streams[s], // str is a ref
+            timestep = str.updateVelocityAndPosition(),
+            color = Object.assign({}, str.color);
+        color.r = color.r * config.STREAM_BRIGHTNESS * Math.pow(1 + amt, .3);
+        color.g = color.g * config.STREAM_BRIGHTNESS * Math.pow(1 + amt, .3);
+        color.b = color.b * config.STREAM_BRIGHTNESS * Math.pow(1 + amt, .3);
         for (let i=0; i < 1; i++ ) {
             splat(
                 str.x / canvas.width,
@@ -1852,12 +1927,13 @@ function generateStreams(amount) {
 
     for (let s=0; s < streams.length; s++) {
         // calculate net force on stream at new position
-        let str = streams[s];
-        let Fx = 0;
-        let Fy = 0;
-        let theta = Math.atan2(str.vy, str.vx);
-        let maxThetaChange = config.STREAM_DIRECTION_VARIABILITY;
-        let newTheta = theta + (Math.PI * 2 * maxThetaChange * (Math.random() - 0.5));
+        let str = streams[s],
+            Fx = 0,
+            Fy = 0,
+            theta = Math.atan2(str.vy, str.vx),
+            maxThetaChange = config.STREAM_DIRECTION_VARIABILITY,
+            newTheta = theta + (Math.PI * 2 * maxThetaChange * (Math.random() - 0.5));
+
         Fx += amt * Math.cos(newTheta) * config.SOUND_SENSITIVITY * config.STREAM_SPEED * 2;
         Fy += amt * Math.sin(newTheta) * config.SOUND_SENSITIVITY * config.STREAM_SPEED * 2;
         for (let k=0; k < streams.length; k++) {
@@ -1899,5 +1975,5 @@ function generateStreams(amount) {
         str.ax = Fx / str.mass;
         str.ay = Fy / str.mass;
     }
-}
+};
 

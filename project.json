@@ -532,26 +532,18 @@
 					"type" : "bool",
 					"value" : true
 				},
-				"more_colors" : 
-				{
-					"condition" : "splat_settings.value && !colorful.value",
-					"order" : 321,
-					"text" : "... More Colors",
-					"type" : "bool",
-					"value" : false
-				},
 				
 				"splat_color" : 
 				{
 					"condition" : "splat_settings.value && !colorful.value",
 					"order" : 322,
-					"text" : "... Splat Color",
+					"text" : "... Splat Color 1",
 					"type" : "color",
 					"value" : "0 1 0"
 				},
 				"splat_color_2" : 
 				{
-					"condition" : "splat_settings.value && more_colors.value && !colorful.value",
+					"condition" : "splat_settings.value && !colorful.value",
 					"order" : 323,
 					"text" : "... Splat Color 2",
 					"type" : "color",
@@ -559,7 +551,7 @@
 				},
 				"splat_color_3" : 
 				{
-					"condition" : "splat_settings.value && more_colors.value && !colorful.value",
+					"condition" : "splat_settings.value && !colorful.value",
 					"order" : 324,
 					"text" : "... Splat Color 3",
 					"type" : "color",
@@ -567,7 +559,7 @@
 				},
 				"splat_color_4" : 
 				{
-					"condition" : "splat_settings.value && more_colors.value && !colorful.value",
+					"condition" : "splat_settings.value && !colorful.value",
 					"order" : 325,
 					"text" : "... Splat Color 4",
 					"type" : "color",
@@ -575,7 +567,7 @@
 				},
 				"splat_color_5" : 
 				{
-					"condition" : "splat_settings.value && more_colors.value && !colorful.value",
+					"condition" : "splat_settings.value && !colorful.value",
 					"order" : 326,
 					"text" : "... Splat Color 5",
 					"type" : "color",
@@ -802,7 +794,7 @@
 				{
 					"condition" : "stream_settings.value",
 					"fraction" : false,
-					"max" : 30,
+					"max" : 50,
 					"min" : 0,
 					"precision" : 2,
 					"step" : 1,
@@ -810,7 +802,7 @@
 					"text" : "... Bounce Strength",
 					"type" : "slider",
 					"editable" : true,
-					"value" : 10
+					"value" : 30
 				}
 
 		},

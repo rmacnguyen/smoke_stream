@@ -587,6 +587,34 @@
 					"editable" : true,
 					"value" : 0.3
 				},
+				"starsplat_points" : 
+				{
+					"condition" : "splat_settings.value",
+					"fraction" : true,
+					"max" : 10,
+					"min" : 0,
+					"order" : 328,
+					"precision" : 1,
+					"step" : 1,
+					"text" : "... Star Points",
+					"type" : "slider",
+					"editable" : true,
+					"value" : 2
+				},
+				"starsplat_angle" : 
+				{
+					"condition" : "splat_settings.value",
+					"fraction" : true,
+					"max" : 360,
+					"min" : -1,
+					"order" : 329,
+					"precision" : 1,
+					"step" : 1,
+					"text" : "... Splat Angle",
+					"type" : "slider",
+					"editable" : true,
+					"value" : -1
+				},
 
 
 			"stream_settings" :

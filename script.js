@@ -35,8 +35,8 @@ function idleSplatsFunction() {
 
 let config = {
     // Default values
-    SIM_RESOLUTION: 256,
-    DYE_RESOLUTION: 512,
+    SIM_RESOLUTION: 1024,
+    DYE_RESOLUTION: 8192,
     DENSITY_DISSIPATION: 3.3,
     DENSITY_DISSIPATION_MULTIPLIER: 1,
     VELOCITY_DISSIPATION: 0.91,
@@ -103,7 +103,10 @@ let config = {
     COLOR_5: { r: 38, g: 38, b: 0 },
     STREAM_MASS: 1.5,
     STREAM_REPEL_FORCE: 0,
-    BOUNCE_STRENGTH: 30
+    BOUNCE_STRENGTH: 30,
+
+    STARSPLAT_ANGLE: -1,
+    STARSPLAT_POINTS: 3
 };
 
 document.addEventListener("DOMContentLoaded", () => {   
@@ -276,6 +279,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 config.STREAM_COLORS = !properties.splat_color_for_stream.value;
                 updateStreams();
             }
+            if (properties.starsplat_points) config.STARSPLAT_POINTS = properties.starsplat_points.value;
+            if (properties.starsplat_angle) config.STARSPLAT_ANGLE = properties.starsplat_angle.value;
 
             // stream properties
             if (properties.num_streams) {
@@ -1669,7 +1674,11 @@ function multipleSplats(amount) {
         const y = Math.random();
         const dx = 1000 * (Math.random() - 0.5);
         const dy = 1000 * (Math.random() - 0.5);
-        splat(x, y, dx * config.SPLAT_STRENGTH, dy * config.SPLAT_STRENGTH, color);
+        if (config.STARSPLAT_POINTS > 0) {
+            starSplat(x, y, config.STARSPLAT_POINTS, config.SPLAT_STRENGTH * 1000, color);
+        } else {
+            splat(x, y, dx * config.SPLAT_STRENGTH, dy * config.SPLAT_STRENGTH, color);
+        }
     }
 }
 
@@ -1687,6 +1696,37 @@ function splat(x, y, dx, dy, color, radius = config.SPLAT_RADIUS) {
     gl.uniform3f(splatProgram.uniforms.color, color.r, color.g, color.b);
     blit(dye.write);
     dye.swap();
+}
+
+function starSplat(x, y, n, strength, color, radius = config.SPLAT_RADIUS) {
+    let splats = [],
+        theta = (config.STARSPLAT_ANGLE == -1)
+            ? Math.random() * 2 * Math.PI
+            : config.STARSPLAT_ANGLE / 180 * Math.PI;
+
+    for (let i = 0; i < n; i++) {
+        theta += 2 * Math.PI / n;
+        
+        splats[i] = {
+            dx: Math.cos(theta),
+            dy: Math.sin(theta)
+        };
+        splat(
+            x + splats[i].dx * Math.log10(1.013 + radius / 1000) * n,
+            y + splats[i].dy * Math.log10(1.013 + radius / 1000) * n,
+            splats[i].dx * strength / 2,
+            splats[i].dy * strength / 2,
+            color,
+            radius / n
+        );
+    }
+}
+
+function longSplat(x, y, dx, dy, velocity = config.STREAM_SPEED) {
+    let splats = [];
+    // fill up splats
+    // add splats to splatsStack
+    // on update, pop first splat off each splats in splatsStack
 }
 
 function correctRadius(radius) {

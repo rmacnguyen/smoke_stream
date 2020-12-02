@@ -26,7 +26,6 @@ function startGUI () {
     fluidFolder.add(config, 'VELOCITY_DISSIPATION', 0, 5.0).name('velocity diffusion');
     fluidFolder.add(config, 'PRESSURE', 0.0, 1.0).name('pressure diffusion');
     fluidFolder.add(config, 'CURL', 0, 100).name('curl').step(1);
-    fluidFolder.add(config, 'SPLAT_RADIUS', 0.01, 1.0).name('splat radius');
     fluidFolder.add(config, 'SHADING').name('shading').onFinishChange(updateKeywords);
 
     var bloomFolder = fluidFolder.addFolder('Bloom');
@@ -40,6 +39,7 @@ function startGUI () {
     sunraysFolder.add(config, 'SUNRAYS_WEIGHT', 0.1, 10.0).name('weight');
 
     var colorFolder = gui.addFolder('Color Settings');
+    colorFolder.add(config, 'COLOR_UPDATE_SPEED', 0, 20).name('color update speed');
     colorFolder.add(config, 'COLORFUL').name('random colors');
     colorFolder.addColor(config, 'COLOR_1').name('color 1').onFinishChange(()=>updateColors(1));
     colorFolder.addColor(config, 'COLOR_2').name('color 2').onFinishChange(()=>updateColors(1));
@@ -60,8 +60,9 @@ function startGUI () {
     splatFolder.add(config, 'SOUND_SPLATS').name('enable sound splats');
     splatFolder.add(config, 'SPLAT_STRENGTH', 0, 100).name('splat strength');
     splatFolder.add(config, 'SOUND_SPLAT_AMOUNT', 1, 100).name('sound splat amount');
-    splatFolder.add(config, 'COLOR_UPDATE_SPEED', 0, 20).name('color update speed');
     splatFolder.add(config, 'SPLAT_RADIUS', 0.01, 1).name('splat radius');
+    splatFolder.add(config, 'STARSPLAT_POINTS', 0, 10, 1).name('star points');
+    splatFolder.add(config, 'STARSPLAT_ANGLE', -1, 360, 1).name('star angle');
 
     var streamFolder = gui.addFolder('Stream Settings');
     streamFolder.add(config, 'NUM_STREAMS', 0, 5, 1).name('number of streams').onFinishChange(updateStreams);
@@ -76,8 +77,8 @@ function startGUI () {
     streamFolder.add(config, 'STREAM_BRIGHTNESS', 0, 1).name('brightness');
     streamFolder.add(config, 'STREAM_MASS', 0.1, 10).name('mass').onFinishChange(updateStreams);
     streamFolder.add(config, 'BOUNCE_STRENGTH', 0, 50).name('bounce strength');
-    console.log(gui.load);
-    console.log(gui.getSaveObject());
+
+    
 }
 
 startGUI();
